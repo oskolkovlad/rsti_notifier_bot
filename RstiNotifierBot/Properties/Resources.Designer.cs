@@ -61,6 +61,35 @@ namespace RstiNotifierBot.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на КЛИЕНТСКИЙ ОТДЕЛ (по вопросам постдоговорного обслуживания):
+        ///Тел.: (812) 321-92-08, 318-17-38, 964-63-03
+        ///
+        ///Обед: с 13:00 до 14:00
+        ///
+        ///График работы
+        ///Пн: с 9:00 до 19:00
+        ///Вт-Чт: с 9:00 до 18:00
+        ///Пт: с 9:00 до 17:00
+        ///Сб: с 10:00 до 17:00
+        ///При подписании дополнительных документов по договорам долевого участия в субботу необходимо
+        ///предварительно записаться в клиентском отделе по тел..
+        /// </summary>
+        internal static string Contacts {
+            get {
+                return ResourceManager.GetString("Contacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на https://instagram.com/rsti.group?utm_medium=copy_link.
+        /// </summary>
+        internal static string InstagramUrl {
+            get {
+                return ResourceManager.GetString("InstagramUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на https://rsti.ru/news.
         /// </summary>
         internal static string NewsUrl {

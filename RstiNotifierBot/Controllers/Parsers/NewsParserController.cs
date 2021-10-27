@@ -15,18 +15,20 @@
 
         protected override NewsDto GetItem(HtmlNode node)
         {
+            var imageElement = node.SelectSingleNode(NewsElements.Image);
+            var dateElement = node.SelectSingleNode(NewsElements.Date);
             var titleElement = node.SelectSingleNode(NewsElements.Title);
             var previewElement = node.SelectSingleNode(NewsElements.Preview);
-            var dateElement = node.SelectSingleNode(NewsElements.Date);
-
+            
             var title = titleElement?.InnerHtml;
             var preview = previewElement?.InnerHtml;
-            var href = titleElement?.GetAttributeValue(NewsAttribute.Href, null);
             var date = dateElement?.InnerHtml;
+            var url = titleElement?.GetAttributeValue(NewsAttribute.Href, null);
+            var imageUrl = imageElement?.GetAttributeValue(NewsAttribute.Source, null);
 
             return string.IsNullOrEmpty(title) && string.IsNullOrEmpty(preview)
                 ? null
-                : new NewsDto(title, preview, date, href);
+                : new NewsDto(title, preview, date, url, imageUrl);
         }
 
         #endregion

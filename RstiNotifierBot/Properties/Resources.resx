@@ -117,6 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Contacts" xml:space="preserve">
+    <value>КЛИЕНТСКИЙ ОТДЕЛ (по вопросам постдоговорного обслуживания):
+Тел.: (812) 321-92-08, 318-17-38, 964-63-03
+
+Обед: с 13:00 до 14:00
+
+График работы
+Пн: с 9:00 до 19:00
+Вт-Чт: с 9:00 до 18:00
+Пт: с 9:00 до 17:00
+Сб: с 10:00 до 17:00
+При подписании дополнительных документов по договорам долевого участия в субботу необходимо
+предварительно записаться в клиентском отделе по тел.</value>
+  </data>
+  <data name="InstagramUrl" xml:space="preserve">
+    <value>https://instagram.com/rsti.group?utm_medium=copy_link</value>
+  </data>
   <data name="NewsUrl" xml:space="preserve">
     <value>https://rsti.ru/news</value>
   </data>

@@ -6,5 +6,6 @@
         public const string Title = ".//a[@class='news-list-item__title']";
         public const string Preview = ".//div[@class='news-list-item__preview']";
         public const string Date = ".//span[@class='news-list-item__date']";
+        public const string Image = ".//div[@class='news-list-item__img']//img";
     }
 }

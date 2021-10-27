@@ -19,8 +19,8 @@
         private static void Main()
         {
             var parserController = new NewsParserController();
-            var answerProvider = new AnswerProvider(parserController);
-            var botProvider = new TelegramBotProvider(Token, answerProvider);
+            var commandsProvider = new ComandsProvider(parserController);
+            var botProvider = new TelegramBotProvider(Token, commandsProvider);
 
             botProvider.ListenUpdates();
 

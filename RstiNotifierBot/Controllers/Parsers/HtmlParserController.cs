@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using HtmlAgilityPack;
@@ -13,6 +14,11 @@
 
         public IEnumerable<T> Parse(string source)
         {
+            if (string.IsNullOrEmpty(source))
+            {
+                return Enumerable.Empty<T>();
+            }
+
             var htmlContent = GetHtmlContent(source).Result;
             if (string.IsNullOrEmpty(htmlContent))
             {

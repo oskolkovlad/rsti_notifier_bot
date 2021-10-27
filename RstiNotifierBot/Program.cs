@@ -1,14 +1,13 @@
 ﻿namespace RstiNotifierBot
 {
     using System;
+    using RstiNotifierBot.BusinessComponents;
     using RstiNotifierBot.Controllers;
     using RstiNotifierBot.Controllers.Parsers;
 
     // TODO: DI.
-    // TODO: Buttons.
     // TODO: beautify post.
     // TODO: add commands (Commands pattern).
-    // TODO: timer notify.
 
     internal class Program
     {
@@ -19,7 +18,8 @@
         private static void Main()
         {
             var parserController = new NewsParserController();
-            var commandsProvider = new ComandsProvider(parserController);
+            var bcSchedulerTasks = new BCSchedulerTasks();
+            var commandsProvider = new ComandsProvider(parserController, bcSchedulerTasks);
             var botProvider = new TelegramBotProvider(Token, commandsProvider);
 
             botProvider.ListenUpdates();

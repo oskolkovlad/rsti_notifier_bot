@@ -12,6 +12,7 @@
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Properties;
     using Telegram.Bot.Types.InputFiles;
+    using RstiNotifierBot.Extensions;
 
     internal class TelegramBotProvider
     {
@@ -27,6 +28,7 @@
         public TelegramBotProvider(string token, IComandsProvider commandsProvider)
         {
             this.commandsProvider = commandsProvider;
+            commandsProvider.NotifyUser += (sender, args) => ProcessingMessageUpdate(args.ChatId, Commands.Last); // TODO
 
             client = new TelegramBotClient(token);
 
@@ -36,7 +38,7 @@
 
         public async void ListenUpdates()
         {
-            await client.SetWebhookAsync("");
+            await client.SetWebhookAsync(string.Empty);
 
             var offset = 0;
 
@@ -70,7 +72,8 @@
             switch (update.Type)
             {
                 case UpdateType.Message:
-                    ProcessingMessageUpdate(update.Message);
+                    var message = update.Message;
+                    ProcessingMessageUpdate(message.Chat.Id, message.Text);
                     break;
 
                 case UpdateType.CallbackQuery:
@@ -83,24 +86,28 @@
             }
         }
 
-        private async void ProcessingMessageUpdate(Message message)
+        private async void ProcessingMessageUpdate(long chatId, string message)
         {
-            var command = message.Text.Replace(name, "");
-
-            var answerResult = commandsProvider.GetAnswer(command);
+            var command = message.Clear(name);
+  
+            var answerResult = commandsProvider.GetAnswer(command, chatId);
             if (answerResult == null || !answerResult.IsSuccess)
             {
                 return;
             }
 
-            var chatId = message.Chat.Id;
+            if (command == Commands.Subscribe || command == Commands.Unsubscribe)
+            {
+                return;
+            }
+            
             var answer = answerResult.Answer;
             var replyMarkup = GetReplyMarkup(answerResult);
 
             try
             {
                 var imageUrl = answerResult.NewsItem?.ImageUrl;
-                if (answerResult.Command == Commands.Last && !string.IsNullOrEmpty(imageUrl))
+                if (command == Commands.Last && !string.IsNullOrEmpty(imageUrl))
                 {
                     var imageFile = new InputOnlineFile(answerResult.NewsItem.ImageUrl);
                     await client.SendPhotoAsync(chatId, imageFile, answer, ParseMode.Default, null, false, 0,

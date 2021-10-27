@@ -1,9 +1,12 @@
 ﻿namespace RstiNotifierBot.Interfaces.Controllers
 {
+    using RstiNotifierBot.CustomEventArgs;
     using RstiNotifierBot.Dto;
 
     internal interface IComandsProvider
     {
-        AnswerResult GetAnswer(string command);
+        event NewsEventHandler NotifyUser;
+
+        AnswerResult GetAnswer(string command, long chatId);
     }
 }

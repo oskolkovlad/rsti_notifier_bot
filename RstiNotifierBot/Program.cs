@@ -1,6 +1,7 @@
 ﻿namespace RstiNotifierBot
 {
     using System;
+    using System.Threading;
     using RstiNotifierBot.BusinessComponents;
     using RstiNotifierBot.Controllers;
     using RstiNotifierBot.Controllers.Parsers;
@@ -24,7 +25,7 @@
 
             botProvider.ListenUpdates();
 
-            Console.ReadKey();
+            Thread.Sleep(Timeout.Infinite);
         }
 
         #endregion

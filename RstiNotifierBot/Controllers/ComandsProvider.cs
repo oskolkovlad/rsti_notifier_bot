@@ -50,11 +50,11 @@
                     break;
 
                 case Commands.Subscribe:
-                    bcSchedulerTasks.ScheduleTask(chatId, () => CheckNewsUpdate(chatId));
+                    //bcSchedulerTasks.ScheduleTask(chatId, () => CheckNewsUpdate(chatId));
                     break;
 
                 case Commands.Unsubscribe:
-                    UnubscribeFromNews(chatId);
+                    //UnubscribeFromNews(chatId);
                     break;
 
                 default:

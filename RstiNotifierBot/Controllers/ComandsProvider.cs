@@ -78,7 +78,7 @@
                 for (var i = 0; i < 4; i++)
                 {
                     var constructedAnswer = ConstructAnswer(items[i]);
-                    if (string.IsNullOrEmpty(answer))
+                    if (string.IsNullOrEmpty(constructedAnswer))
                     {
                         continue;
                     }

@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using HtmlAgilityPack;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
@@ -10,8 +11,8 @@
     {
         #region HtmlParserController Members
 
-        protected override IEnumerable<NewsDto> GetItems(HtmlDocument document) =>
-            document.DocumentNode.SelectNodes(NewsElements.News).Select(GetItem);
+        protected override async Task<IEnumerable<NewsDto>> GetItems(HtmlDocument document) =>
+            document.DocumentNode.SelectNodes(NewsElements.News).Take(5).Select(GetItem);
 
         protected override NewsDto GetItem(HtmlNode node)
         {

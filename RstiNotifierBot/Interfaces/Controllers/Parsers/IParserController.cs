@@ -1,9 +1,10 @@
 ﻿namespace RstiNotifierBot.Interfaces.Controllers.Parsers
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    internal interface IParserController<out T>
+    internal interface IParserController<T>
     {
-        IEnumerable<T> Parse(string source);
+        Task<IEnumerable<T>> Parse(string source);
     }
 }

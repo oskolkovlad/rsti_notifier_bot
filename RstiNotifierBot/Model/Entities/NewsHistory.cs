@@ -1,4 +1,4 @@
-﻿namespace RstiNotifierBot.Model
+﻿namespace RstiNotifierBot.Model.Entities
 {
     internal class NewsHistory
     {

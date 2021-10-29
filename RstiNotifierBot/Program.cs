@@ -1,30 +1,57 @@
 ﻿namespace RstiNotifierBot
 {
     using System;
+    using System.Threading;
     using RstiNotifierBot.BusinessComponents;
-    using RstiNotifierBot.Controllers;
+    using RstiNotifierBot.Controllers.Commands;
+    using RstiNotifierBot.Controllers.Handlers;
     using RstiNotifierBot.Controllers.Parsers;
 
     // TODO: DI.
     // TODO: beautify post.
-    // TODO: add commands (Commands pattern).
 
     internal class Program
     {
-        private const string Token = "2079782412:AAG081yNVkR3OC6bI5DOj2iA3YqTkTPWv0c";
+        private static TelegramBotManager _borProvider;
+
+        private static void Main() => StartWorker();
 
         #region Private Members
 
-        private static void Main()
+        private async static void StartWorker()
         {
-            var parserController = new NewsParserController();
+            try
+            {
+                InitializeDependencies();
+                await _borProvider.Start();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            
+            Thread.Sleep(Timeout.Infinite);
+        }
+
+        private static void InitializeDependencies()
+        {
+            var newsParserController = new NewsParserController();
+            var bcNewsList = new BCNewsList(newsParserController);
             var bcSchedulerTasks = new BCSchedulerTasks();
-            var commandsProvider = new ComandsProvider(parserController, bcSchedulerTasks);
-            var botProvider = new TelegramBotProvider(Token, commandsProvider);
 
-            botProvider.ListenUpdates();
+            var messageHandler = new MessageHandler(bcNewsList);
+            var subscribtionHandler = new SubscribtionHandler(bcNewsList, bcSchedulerTasks);
 
-            Console.ReadKey();
+            var lastCommand = new LastCommand(messageHandler);
+            var topCommand = new TopCommand(messageHandler);
+            var subscribeCommand = new SubscribeCommand(subscribtionHandler);
+            var unsubscribeCommand = new UnsubscribeCommand(subscribtionHandler);
+            var infoCommand = new InfoCommand(messageHandler);
+            var commandsInvoker = new CommandsInvoker(lastCommand, topCommand, subscribeCommand,
+                unsubscribeCommand, infoCommand);
+
+            var botHandler = new TelegramBotHandler(commandsInvoker);
+            _borProvider = new TelegramBotManager(botHandler);
         }
 
         #endregion

@@ -12,14 +12,14 @@
     {
         #region IParserController Members
 
-        public IEnumerable<T> Parse(string source)
+        public async Task<IEnumerable<T>> Parse(string source)
         {
             if (string.IsNullOrEmpty(source))
             {
                 return Enumerable.Empty<T>();
             }
 
-            var htmlContent = GetHtmlContent(source).Result;
+            var htmlContent = await GetHtmlContent(source);
             if (string.IsNullOrEmpty(htmlContent))
             {
                 return null;
@@ -28,7 +28,7 @@
             var document = new HtmlDocument();
             document.LoadHtml(htmlContent);
 
-            var items = GetItems(document);
+            var items = await GetItems(document);
             return items;
         }
 
@@ -36,7 +36,7 @@
 
         #region Protected Members
 
-        protected abstract IEnumerable<T> GetItems(HtmlDocument document);
+        protected abstract Task<IEnumerable<T>> GetItems(HtmlDocument document);
 
         protected abstract T GetItem(HtmlNode node);
 

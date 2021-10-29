@@ -1,15 +1,16 @@
 ﻿namespace RstiNotifierBot.Model
 {
     using Microsoft.EntityFrameworkCore;
+    using RstiNotifierBot.Model.Entities;
 
     internal class NewsContext : DbContext
     {
         private const string ConectionString =
             @"Server=(localdb)\mssqllocaldb;Database=rsti_news;Trusted_Connection=True;";
 
-        public DbSet<News> News { get; set; }
+        public virtual DbSet<News> News { get; set; }
 
-        public DbSet<NewsHistory> NewsHistories { get; set; }
+        public virtual DbSet<NewsHistory> NewsHistories { get; set; }
 
         public NewsContext()
         {

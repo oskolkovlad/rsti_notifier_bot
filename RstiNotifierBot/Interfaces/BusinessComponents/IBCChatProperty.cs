@@ -1,19 +1,13 @@
 ﻿namespace RstiNotifierBot.Interfaces.BusinessComponents
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using RstiNotifierBot.Model.Entities;
 
-    internal interface IBCChat
+    internal interface IBCChatProperty
     {
-        void CreateChat(Chat chat);
+        void Create(ChatProperty chatProperty);
 
-        Task<IEnumerable<Chat>> GetChats();
+        bool IsExists(long chatId, string name, string value);
 
-        Task<bool> HasSubcribtion(long chaId);
-
-        Task Subscribe(long chaId);
-
-        Task Unsubscribe(long chatId);
+        void Delete(long chatId, string name);
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -25,7 +24,7 @@
 
         public string Type { get { return Commands.Info; } }
 
-        public async Task<CommandResult> Execute(CommandContext context)
+        public CommandResult Execute(CommandContext context)
         {
             var post = _messageHandler.GetContactInfoMessage();
             var inlineMarkup = new List<List<InlineButtonDto>>

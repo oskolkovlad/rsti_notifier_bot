@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using RstiNotifierBot.Dto;
+    using RstiNotifierBot.Model.Entities;
 
     internal interface IBCNewsList
     {
-        Task<NewsDto> GetLastNewsItem(string url);
+        Task<News> GetLastNewsItem(string url);
 
-        Task<IEnumerable<NewsDto>> GetNewsItems(string url);
+        Task<IEnumerable<News>> GetNewsItems(string url);
     }
 }

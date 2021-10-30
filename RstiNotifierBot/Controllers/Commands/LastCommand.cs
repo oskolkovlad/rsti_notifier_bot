@@ -1,7 +1,6 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -23,9 +22,9 @@
 
         public string Type { get { return Commands.Last; } }
 
-        public async Task<CommandResult> Execute(CommandContext context)
+        public CommandResult Execute(CommandContext context)
         {
-            var (message, url, imageUrl) = await _messageHandler.GetLastNewsMessage();
+            var (message, url, imageUrl) = _messageHandler.GetLastNewsMessage();
             var inlineMarkup = new List<List<InlineButtonDto>>
             {
                 new List<InlineButtonDto> { new InlineButtonDto(LinkCaption, url) }

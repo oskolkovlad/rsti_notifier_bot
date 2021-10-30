@@ -39,18 +39,22 @@
             var newsParserController = new NewsParserController();
             var bcNewsList = new BCNewsList(newsParserController);
             var bcSchedulerTasks = new BCSchedulerTasks();
+            
             var chatRepository = new ChatRepository();
+            var chatPropertyRepository = new ChatPropertyRepository();
+            var newsRepository = new NewsRepository();
             var bcChat = new BCChat(chatRepository);
-            var bcNews = new BCNews();
+            var bcChatProperty = new BCChatProperty(chatPropertyRepository);
+            var bcNews = new BCNews(newsRepository);
 
             var messageHandler = new MessageHandler(bcNewsList);
-            var subscribtionHandler = new SubscribtionHandler(bcChat);
+            var subscriptionHandler = new SubscriptionHandler(bcChatProperty);
 
             var startCommand = new StartCommand(bcChat);
             var lastCommand = new LastCommand(messageHandler);
             var topCommand = new TopCommand(messageHandler);
-            var subscribeCommand = new SubscribeCommand(subscribtionHandler);
-            var unsubscribeCommand = new UnsubscribeCommand(subscribtionHandler);
+            var subscribeCommand = new SubscribeCommand(subscriptionHandler);
+            var unsubscribeCommand = new UnsubscribeCommand(subscriptionHandler);
             var infoCommand = new InfoCommand(messageHandler);
             var commandsInvoker = new CommandsInvoker(startCommand, lastCommand, topCommand,
                 subscribeCommand, unsubscribeCommand, infoCommand);

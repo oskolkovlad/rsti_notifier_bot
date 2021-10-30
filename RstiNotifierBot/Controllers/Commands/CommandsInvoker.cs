@@ -1,7 +1,6 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -23,7 +22,7 @@
 
         #region ICommandsInvoker Members
 
-        public async Task<CommandResult> Execute(CommandContext context, string command)
+        public CommandResult Execute(CommandContext context, string command)
         {
             CommandResult result;
 
@@ -35,7 +34,7 @@
                 case Commands.Subscribe:
                 case Commands.Unsubscribe:
                 case Commands.Info:
-                    result = await _commands[command].Execute(context);
+                    result = _commands[command].Execute(context);
                     break;
 
                 default:

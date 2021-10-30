@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -20,9 +19,9 @@
 
         public string Type { get { return Commands.Top5; } }
 
-        public async Task<CommandResult> Execute(CommandContext context)
+        public CommandResult Execute(CommandContext context)
         {
-            var message = await _messageHandler.GetTop5NewsMessage();
+            var message = _messageHandler.GetTop5NewsMessage();
             return new PostCommandResult(message);
         }
 

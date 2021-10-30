@@ -1,9 +1,9 @@
 ﻿namespace RstiNotifierBot.Interfaces.BusinessComponents
 {
-    using RstiNotifierBot.Dto;
+    using RstiNotifierBot.Model.Entities;
 
     internal interface IBCNews
     {
-        NewsDto GetLastNewsItem();
+        News GetLastNewsItem();
     }
 }

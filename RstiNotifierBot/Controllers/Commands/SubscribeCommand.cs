@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -9,21 +8,20 @@
 
     internal class SubscribeCommand : ICommand
     {
-        private readonly ISubscribtionHandler _subscribtionHandler;
+        private readonly ISubscriptionHandler _subscriptionHandler;
 
-        public SubscribeCommand(ISubscribtionHandler subscribtionHandler)
+        public SubscribeCommand(ISubscriptionHandler subscriptionHandler)
         {
-            _subscribtionHandler = subscribtionHandler;
+            _subscriptionHandler = subscriptionHandler;
         }
 
         #region ICommand Members
 
         public string Type { get { return Commands.Subscribe; } }
 
-        public async Task<CommandResult> Execute(CommandContext context)
+        public CommandResult Execute(CommandContext context)
         {
-            var message = await _subscribtionHandler.Subscribe(context.Chat.Id);
-
+            var message = _subscriptionHandler.Subscribe(context.Chat.Id);
             return new PostCommandResult(message);
         }
 

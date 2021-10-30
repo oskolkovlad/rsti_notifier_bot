@@ -10,35 +10,40 @@
     internal class NewsRepository : BaseRepository,
         INewsRepository
     {
+        #region SQL Queries
+
+        private const string InsertNewsQuery =
+            @"insert into news values (@NewsId, @Title, @Preview, @Url, @ImageUrl, @PublishDate)";
+
+        private const string GetNewsQuery =
+            @"select * from news";
+
+        private const string GetNewsByIdQuery =
+            @"select * from news where newsid = @newsId";
+
+        #endregion
+
         #region INewsRepository Members
+
+        public void Create(News news)
+        {
+            var connectionString = GetConnectionString();
+            using var connection = new NpgsqlConnection(connectionString);
+            connection.Execute(InsertNewsQuery, news);
+        }
 
         public IList<News> GetNews()
         {
             var connectionString = GetConnectionString();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                return connection.Query<News>("select * from news").ToList();
-            }
+            using var connection = new NpgsqlConnection(connectionString);
+            return connection.Query<News>(GetNewsQuery).ToList();
         }
 
         public News GetNewsById(string newsId)
         {
             var connectionString = GetConnectionString();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                return connection.Query<News>( "select * from chat where newsid = @newsId", new { newsId })
-                    .FirstOrDefault();
-            }
-        }
-
-        public void Create(News news)
-        {
-            var connectionString = GetConnectionString();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                var sqlQuery = "insert into news values(@NewsId, @Title, @Preview, @Url, @ImageUrl, @PublishDate)";
-                connection.Execute(sqlQuery, news);
-            }
+            using var connection = new NpgsqlConnection(connectionString);
+            return connection.Query<News>(GetNewsByIdQuery, new { newsId }).FirstOrDefault();
         }
 
         #endregion

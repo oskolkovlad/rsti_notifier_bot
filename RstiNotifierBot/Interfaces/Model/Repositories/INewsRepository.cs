@@ -5,10 +5,10 @@
 
     internal interface INewsRepository
     {
+        void Create(News news);
+
         IList<News> GetNews();
 
         News GetNewsById(string newsId);
-
-        void Create(News news);
     }
 }

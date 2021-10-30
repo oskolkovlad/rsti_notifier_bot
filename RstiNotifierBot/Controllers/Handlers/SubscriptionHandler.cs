@@ -1,54 +1,59 @@
 ﻿namespace RstiNotifierBot.Controllers.Handlers
 {
-    using System.Threading.Tasks;
+    using System;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
+    using RstiNotifierBot.Model.Entities;
 
-    internal class SubscribtionHandler : ISubscribtionHandler
+    internal class SubscriptionHandler : ISubscriptionHandler
     {
+        private const string SubscriptionPropertyName = "Subscription";
         private const string SubscribedMessage ="Подписка оформлена!";
         private const string UnsubscribedMessage = "Вы отписались от новостной рассылки. Будем ждать вас еще!";
         private const string AlreadySubscribedMessage =
             "Вы уже оформили подписку.\nКак только появятся новости, мы сообщим, не переживайте)";
         private const string AlreadyUnsubscribedMessage = "Ваша подписка уже была отменена ранее.";
 
-        private readonly IBCChat _bcChat;
+        private readonly IBCChatProperty _bcChatProperty;
 
-        public SubscribtionHandler(IBCChat bcChat)
+        public SubscriptionHandler(IBCChatProperty bcChatProperty)
         {
-            _bcChat = bcChat;
+            _bcChatProperty = bcChatProperty;
         }
 
-        #region ISubscribtionHandler Members
+        #region ISubscriptionHandler Members
 
-        public async Task<string> Subscribe(long chatId)
+        public string Subscribe(long chatId)
         {
             string message;
 
-            if (await IsSubcribtionAlreadyDone(chatId))
+            if (IsSubscriptionAlreadyDone(chatId))
             {
                 message = AlreadySubscribedMessage;
             }
             else
             {
-                await _bcChat.Subscribe(chatId);
+                var chatProperty = CreateSubscriptionProperty(chatId);
+                _bcChatProperty.Create(chatProperty);
+
                 message = SubscribedMessage;
             }
 
             return message;
         }
 
-        public async Task<string> Unsubscribe(long chatId)
+        public string Unsubscribe(long chatId)
         {
             string message;
 
-            if (!(await IsSubcribtionAlreadyDone(chatId)))
+            if (!IsSubscriptionAlreadyDone(chatId))
             {
                 message = AlreadyUnsubscribedMessage;
             }
             else
             {
-                await _bcChat.Unsubscribe(chatId);
+                _bcChatProperty.Delete(chatId, SubscriptionPropertyName);
                 message = UnsubscribedMessage;
             }
 
@@ -59,7 +64,14 @@
 
         #region Private Members
 
-        private async Task<bool> IsSubcribtionAlreadyDone(long chaId) => await _bcChat.HasSubcribtion(chaId);
+        private ChatProperty CreateSubscriptionProperty(long chatId)
+        {
+            var id = Guid.NewGuid().ToString().Clear("-");
+            return new ChatProperty(id, chatId, SubscriptionPropertyName, true.ToString());
+        }
+
+        private bool IsSubscriptionAlreadyDone(long chatId) =>
+            _bcChatProperty.IsExists(chatId, SubscriptionPropertyName, true.ToString());
 
         #endregion
     }

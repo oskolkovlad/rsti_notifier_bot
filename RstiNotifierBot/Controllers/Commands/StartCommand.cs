@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
-    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -21,17 +20,15 @@
 
         public string Type { get { return Commands.Start; } }
 
-        public async Task<CommandResult> Execute(CommandContext context)
+        public CommandResult Execute(CommandContext context)
         {
             var chatInfo = context.Chat;
-            var chat = new Chat
+            var chat = new Chat(chatInfo.Id, chatInfo.Username, chatInfo.FirstName, chatInfo.LastName);
+
+            if (!_bcChat.IsExists(chat.ChatId))
             {
-                ChatId = chatInfo.Id,
-                Username = chatInfo.Username,
-                FirstName = chatInfo.FirstName,
-                LastName = chatInfo.LastName
-            };
-            _bcChat.CreateChat(chat);
+                _bcChat.Create(chat);
+            }
 
             return new CommandResult(true);
         }

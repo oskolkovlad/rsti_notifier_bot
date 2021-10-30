@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.Interfaces.Controllers.Commands
 {
-    using System.Threading.Tasks;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
 
@@ -8,6 +7,6 @@
     {
         string Type { get; }
 
-        Task<CommandResult> Execute(CommandContext context);
+        CommandResult Execute(CommandContext context);
     }
 }

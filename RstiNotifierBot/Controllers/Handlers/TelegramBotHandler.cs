@@ -99,7 +99,7 @@
             }
             
             var chat = new CommandContext(message.Chat);
-            var result = await _commandsInvoker.Execute(chat, command);
+            var result = _commandsInvoker.Execute(chat, command);
             if (!result.IsSuccess)
             {
                 await botClient.SendTextMessage(chatId, ProcessingWarningMessage);

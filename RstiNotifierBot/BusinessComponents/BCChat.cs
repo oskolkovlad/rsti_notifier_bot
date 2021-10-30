@@ -1,7 +1,5 @@
 ﻿namespace RstiNotifierBot.BusinessComponents
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Model.Repositories;
     using RstiNotifierBot.Model.Entities;
@@ -17,30 +15,11 @@
 
         #region IBCChatProperty Members
 
-        public void CreateChat(Chat chat)
-        {
-            _chatRepository.Create(chat);
-        }
+        public void Create(Chat chat) => _chatRepository.Create(chat);
 
-        public async Task<IEnumerable<Chat>> GetChats()
-        {
-            return _chatRepository.GetChats();
-        }
+        public bool IsExists(long chaId) => _chatRepository.GetChatById(chaId) != null;
 
-        public async Task<bool> HasSubcribtion(long chaId)
-        {
-            return false;
-        }
-
-        public async Task Subscribe(long chaId)
-        {
-
-        }
-
-        public async Task Unsubscribe(long chatId)
-        {
-
-        }
+        public void Delete(long chatId) => _chatRepository.Delete(chatId);
 
         #endregion
     }

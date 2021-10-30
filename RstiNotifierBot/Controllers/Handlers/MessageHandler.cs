@@ -3,10 +3,9 @@
     using System;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
-    using RstiNotifierBot.Dto;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
+    using RstiNotifierBot.Model.Entities;
     using RstiNotifierBot.Properties;
 
     internal class MessageHandler : IMessageHandler
@@ -22,21 +21,21 @@
 
         #region Public Members
 
-        public async Task<(string message, string url, string imageUrl)> GetLastNewsMessage()
+        public (string message, string url, string imageUrl) GetLastNewsMessage()
         {
             string message;
 
-            var item = await _bcNewsList.GetLastNewsItem(Resources.NewsUrl);
+            var item = _bcNewsList.GetLastNewsItem(Resources.NewsUrl).Result;
             message = item != null ? ConstructMessage(item, false) : NewsNotFoundMessages;
 
             return (message, item.Url, item.ImageUrl);
         }
 
-        public async Task<string> GetTop5NewsMessage()
+        public string GetTop5NewsMessage()
         {
             string message = null;
 
-            var items = (await _bcNewsList.GetNewsItems(Resources.NewsUrl)).ToList();
+            var items = _bcNewsList.GetNewsItems(Resources.NewsUrl).Result.ToList();
             if (items.Any())
             {
                 for (var i = 0; i < 5; i++)
@@ -68,7 +67,7 @@
 
         #region Private Members
 
-        private static string ConstructMessage(NewsDto item, bool appendLink = true)
+        private static string ConstructMessage(News item, bool appendLink = true)
         {
             if (item == null)
             {
@@ -76,7 +75,7 @@
             }
 
             var message = new StringBuilder();
-            message.AppendLine($"`{item?.Date.ToShortDateString()}`");
+            message.AppendLine($"`{item?.PublishDate.ToShortDateString()}`");
             message.AppendLine($"*{item?.Title}*");
             message.AppendLine(item?.Preview);
             if (appendLink)

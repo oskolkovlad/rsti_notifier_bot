@@ -5,16 +5,16 @@
     using System.Threading.Tasks;
     using HtmlAgilityPack;
     using RstiNotifierBot.BusinessObjects.Constants;
-    using RstiNotifierBot.Dto;
+    using RstiNotifierBot.Model.Entities;
 
-    internal class NewsParserController : HtmlParserController<NewsDto>
+    internal class NewsParserController : HtmlParserController<News>
     {
         #region HtmlParserController Members
 
-        protected override async Task<IEnumerable<NewsDto>> GetItems(HtmlDocument document) =>
+        protected override async Task<IEnumerable<News>> GetItems(HtmlDocument document) =>
             document.DocumentNode.SelectNodes(NewsElements.News).Take(5).Select(GetItem);
 
-        protected override NewsDto GetItem(HtmlNode node)
+        protected override News GetItem(HtmlNode node)
         {
             var imageElement = node.SelectSingleNode(NewsElements.Image);
             var dateElement = node.SelectSingleNode(NewsElements.Date);
@@ -29,7 +29,7 @@
 
             return string.IsNullOrEmpty(title) && string.IsNullOrEmpty(preview)
                 ? null
-                : new NewsDto(title, preview, date, url, imageUrl);
+                : new News(title, preview, date, url, imageUrl);
         }
 
         #endregion

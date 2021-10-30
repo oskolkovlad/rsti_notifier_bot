@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
+    using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
     using RstiNotifierBot.Interfaces.Controllers.Commands;
 
@@ -22,18 +23,19 @@
 
         #region ICommandsInvoker Members
 
-        public async Task<CommandResult> Execute(long chatId, string command)
+        public async Task<CommandResult> Execute(CommandContext context, string command)
         {
             CommandResult result;
 
             switch (command)
             {
+                case Commands.Start:
                 case Commands.Last:
                 case Commands.Top5:
                 case Commands.Subscribe:
                 case Commands.Unsubscribe:
                 case Commands.Info:
-                    result = await _commands[command].Execute(chatId);
+                    result = await _commands[command].Execute(context);
                     break;
 
                 default:

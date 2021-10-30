@@ -12,11 +12,11 @@
             "Вы уже оформили подписку.\nКак только появятся новости, мы сообщим, не переживайте)";
         private const string AlreadyUnsubscribedMessage = "Ваша подписка уже была отменена ранее.";
 
-        private readonly IBCChatProperty _bcChatProperty;
+        private readonly IBCChat _bcChat;
 
-        public SubscribtionHandler(IBCChatProperty bcChatProperty)
+        public SubscribtionHandler(IBCChat bcChat)
         {
-            _bcChatProperty = bcChatProperty;
+            _bcChat = bcChat;
         }
 
         #region ISubscribtionHandler Members
@@ -31,7 +31,7 @@
             }
             else
             {
-                await _bcChatProperty.Subscribe(chatId);
+                await _bcChat.Subscribe(chatId);
                 message = SubscribedMessage;
             }
 
@@ -48,7 +48,7 @@
             }
             else
             {
-                await _bcChatProperty.Unsubscribe(chatId);
+                await _bcChat.Unsubscribe(chatId);
                 message = UnsubscribedMessage;
             }
 
@@ -59,7 +59,7 @@
 
         #region Private Members
 
-        private async Task<bool> IsSubcribtionAlreadyDone(long chaId) => await _bcChatProperty.HasSubcribtion(chaId);
+        private async Task<bool> IsSubcribtionAlreadyDone(long chaId) => await _bcChat.HasSubcribtion(chaId);
 
         #endregion
     }

@@ -2,7 +2,7 @@
 {
     using RstiNotifierBot.Dto;
 
-    internal interface IBCNewsProperty
+    internal interface IBCNews
     {
         NewsDto GetLastNewsItem();
     }

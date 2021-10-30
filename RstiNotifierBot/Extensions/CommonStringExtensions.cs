@@ -2,6 +2,6 @@
 {
     internal static class CommonStringExtensions
     {
-        public static string Clear(this string rr, string value) => rr.Replace(value, string.Empty);
+        public static string Clear(this string source, string value) => source?.Replace(value, string.Empty);
     }
 }

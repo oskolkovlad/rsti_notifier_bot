@@ -3,7 +3,7 @@
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Interfaces.BusinessComponents;
 
-    internal class BCNewsProperty : IBCNewsProperty
+    internal class BCNews : IBCNews
     {
         #region IBCNewsProperty Members
 

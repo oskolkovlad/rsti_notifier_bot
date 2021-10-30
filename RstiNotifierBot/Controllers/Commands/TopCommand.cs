@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using RstiNotifierBot.BusinessObjects.Constants;
+    using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
     using RstiNotifierBot.Interfaces.Controllers.Commands;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
@@ -19,7 +20,7 @@
 
         public string Type { get { return Commands.Top5; } }
 
-        public async Task<CommandResult> Execute(long chatId)
+        public async Task<CommandResult> Execute(CommandContext context)
         {
             var message = await _messageHandler.GetTop5NewsMessage();
             return new PostCommandResult(message);

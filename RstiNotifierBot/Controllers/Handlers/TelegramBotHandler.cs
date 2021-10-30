@@ -17,7 +17,8 @@
     
     internal class TelegramBotHandler : ITelegramBotHandler
     {
-        private const string ProcessingWarningMessage = "Данный тип обновления не обрабатывается.";
+        private const string ProcessingWarningMessage =
+            "Данная команда не поддерживается ботом...Попробуте другую.";
 
         private readonly ICommandsInvoker _commandsInvoker;
 
@@ -92,7 +93,13 @@
             var botInfo = await botClient.GetMeAsync();
             var command = message.Text.Clear($"@{botInfo.Username}");
 
-            var result = await _commandsInvoker.Execute(chatId, command);
+            if (string.IsNullOrEmpty(command) || !command.StartsWith('/'))
+            {
+                return;
+            }
+            
+            var chat = new CommandContext(message.Chat);
+            var result = await _commandsInvoker.Execute(chat, command);
             if (!result.IsSuccess)
             {
                 await botClient.SendTextMessage(chatId, ProcessingWarningMessage);

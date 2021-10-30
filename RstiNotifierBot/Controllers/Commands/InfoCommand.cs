@@ -25,7 +25,7 @@
 
         public string Type { get { return Commands.Info; } }
 
-        public async Task<CommandResult> Execute(long chatId)
+        public async Task<CommandResult> Execute(CommandContext context)
         {
             var post = _messageHandler.GetContactInfoMessage();
             var inlineMarkup = new List<List<InlineButtonDto>>

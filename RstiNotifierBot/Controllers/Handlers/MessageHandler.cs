@@ -76,8 +76,8 @@
             }
 
             var message = new StringBuilder();
-            message.AppendLine(item?.Date.ToShortDateString());
-            message.AppendLine(item?.Title);
+            message.AppendLine($"`{item?.Date.ToShortDateString()}`");
+            message.AppendLine($"*{item?.Title}*");
             message.AppendLine(item?.Preview);
             if (appendLink)
             {

@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using Telegram.Bot;
+    using Telegram.Bot.Types.Enums;
     using Telegram.Bot.Types.InputFiles;
     using Telegram.Bot.Types.ReplyMarkups;
 
@@ -15,7 +16,7 @@
                 return;
             }
 
-            await botClient.SendTextMessageAsync(chatId, message, replyMarkup: replyMarkup);
+            await botClient.SendTextMessageAsync(chatId, message, ParseMode.Markdown, replyMarkup: replyMarkup);
         }
 
         public static async Task SendImageMessage(this ITelegramBotClient botClient, long chatId, string message,
@@ -27,7 +28,7 @@
             }
 
             var imageFile = new InputOnlineFile(imageUrl);
-            await botClient.SendPhotoAsync(chatId, imageFile, message, replyMarkup: replyMarkup);
+            await botClient.SendPhotoAsync(chatId, imageFile, message, ParseMode.Markdown, replyMarkup: replyMarkup);
         }
     }
 }

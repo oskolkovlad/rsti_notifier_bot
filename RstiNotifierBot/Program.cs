@@ -38,9 +38,11 @@
             var newsParserController = new NewsParserController();
             var bcNewsList = new BCNewsList(newsParserController);
             var bcSchedulerTasks = new BCSchedulerTasks();
+            var bcChatProperty = new BCChatProperty();
+            var bcNewsProperty = new BCNewsProperty();
 
             var messageHandler = new MessageHandler(bcNewsList);
-            var subscribtionHandler = new SubscribtionHandler(bcNewsList, bcSchedulerTasks);
+            var subscribtionHandler = new SubscribtionHandler(bcChatProperty);
 
             var lastCommand = new LastCommand(messageHandler);
             var topCommand = new TopCommand(messageHandler);

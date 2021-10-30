@@ -8,9 +8,6 @@
     using RstiNotifierBot.Controllers.Parsers;
     using RstiNotifierBot.Model.Repositories;
 
-    // TODO: DI.
-    // TODO: beautify post.
-
     internal class Program
     {
         private static TelegramBotManager _borProvider;

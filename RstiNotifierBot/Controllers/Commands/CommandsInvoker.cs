@@ -37,7 +37,7 @@
                     break;
 
                 default:
-                    result = null;
+                    result = new CommandResult(false);
                     break;
             }
 

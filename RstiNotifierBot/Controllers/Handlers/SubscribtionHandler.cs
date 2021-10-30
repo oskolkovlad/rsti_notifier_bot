@@ -6,124 +6,61 @@
 
     internal class SubscribtionHandler : ISubscribtionHandler
     {
-        private readonly IBCNewsList _bcNewsList;
-        private readonly IBCSchedulerTasks _bcSchedulerTasks;
+        private const string SubscribedMessage ="Подписка оформлена!";
+        private const string UnsubscribedMessage = "Вы отписались от новостной рассылки. Будем ждать вас еще!";
+        private const string AlreadySubscribedMessage =
+            "Вы уже оформили подписку.\nКак только появятся новости, мы сообщим, не переживайте)";
+        private const string AlreadyUnsubscribedMessage = "Ваша подписка уже была отменена ранее.";
 
-        public SubscribtionHandler(IBCNewsList bcNewsList, IBCSchedulerTasks bcSchedulerTasks)
+        private readonly IBCChatProperty _bcChatProperty;
+
+        public SubscribtionHandler(IBCChatProperty bcChatProperty)
         {
-            _bcNewsList = bcNewsList;
-            _bcSchedulerTasks = bcSchedulerTasks;
+            _bcChatProperty = bcChatProperty;
         }
 
         #region ISubscribtionHandler Members
 
-        public Task Subscribe(long chatId)
+        public async Task<string> Subscribe(long chatId)
         {
-            throw new System.NotImplementedException();
+            string message;
+
+            if (await IsSubcribtionAlreadyDone(chatId))
+            {
+                message = AlreadySubscribedMessage;
+            }
+            else
+            {
+                await _bcChatProperty.Subscribe(chatId);
+                message = SubscribedMessage;
+            }
+
+            return message;
         }
 
-        public Task Unsubscribe(long chatId)
+        public async Task<string> Unsubscribe(long chatId)
         {
-            throw new System.NotImplementedException();
+            string message;
+
+            if (!(await IsSubcribtionAlreadyDone(chatId)))
+            {
+                message = AlreadyUnsubscribedMessage;
+            }
+            else
+            {
+                await _bcChatProperty.Unsubscribe(chatId);
+                message = UnsubscribedMessage;
+            }
+
+            return message;
         }
 
         #endregion
 
         #region Private Members
 
-
+        private async Task<bool> IsSubcribtionAlreadyDone(long chaId) => await _bcChatProperty.HasSubcribtion(chaId);
 
         #endregion
-
-        //private void CheckNewsUpdate(long chatId)
-        //{
-        //    var lastNewsItem = GetLastNews();
-        //    if (lastNewsItem == null)
-        //    {
-        //        return;
-        //    }
-
-        //    try
-        //    {
-        //        if (IsLastNewsAdded(chatId, lastNewsItem))
-        //        {
-        //            var args = new NewsEventArgs(chatId, lastNewsItem);
-        //            NotifyUser(this, args);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-        //}
-
-        //private bool IsLastNewsAdded(long chatId, NewsDto lastNewsItem)
-        //{
-        //    using (var context = new NewsContext())
-        //    {
-        //        var news = context.News;
-        //        var newsHistories = context.NewsHistories;
-
-        //        var ourHistory = newsHistories.Where(x => x.ChatId == chatId).ToList();
-        //        if (ourHistory.Count > 0)
-        //        {
-        //            var existsNewsItem = news.FirstOrDefault(x =>
-        //                x.Title == lastNewsItem.Title &&
-        //                x.Date == lastNewsItem.Date &&
-        //                x.Url == lastNewsItem.Url);
-        //            if (existsNewsItem != null)
-        //            {
-        //                if (newsHistories.Any(x => x.NewsId == existsNewsItem.Id))
-        //                {
-        //                    return false;
-        //                }
-        //                else
-        //                {
-        //                    context.NewsHistories.Add(CreateNewsHistory(chatId, existsNewsItem.Id));
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            var newNewsItem = CreateNews(lastNewsItem);
-        //            context.News.Add(newNewsItem);
-
-        //            context.NewsHistories.Add(CreateNewsHistory(chatId, newNewsItem.Id));
-        //        }
-
-        //        context.SaveChanges();
-        //    }
-
-        //    return true;
-        //}
-
-        //private News CreateNews(NewsDto newsItem)
-        //{
-        //    var newNewsItem = new News
-        //    {
-        //        Id = Guid.NewGuid().ToString().Clear("-"),
-        //        Title = newsItem.Title,
-        //        Preview = newsItem.Preview,
-        //        Date = newsItem.Date,
-        //        Url = newsItem.Url
-        //    };
-        //    return newNewsItem;
-        //}
-
-        //private NewsHistory CreateNewsHistory(long chatId, string newsId)
-        //{
-        //    var newsHistory = new NewsHistory
-        //    {
-        //        Id = Guid.NewGuid().ToString().Clear("-"),
-        //        ChatId = chatId,
-        //        NewsId = newsId
-        //    };
-        //    return newsHistory;
-        //}
-
-        //private void UnubscribeFromNews(long chatId)
-        //{
-        //    //bcSchedulerTasks.StopTask(chatId);
-        //}
     }
 }

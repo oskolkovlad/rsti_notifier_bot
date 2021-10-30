@@ -21,9 +21,9 @@
 
         public async Task<CommandResult> Execute(long chatId)
         {
-            await _subscribtionHandler.Subscribe(chatId);
+            var message = await _subscribtionHandler.Subscribe(chatId);
 
-            return new CommandResult(true);
+            return new PostCommandResult(message);
         }
 
         #endregion

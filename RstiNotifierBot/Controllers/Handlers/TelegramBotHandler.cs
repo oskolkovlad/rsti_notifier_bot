@@ -103,10 +103,6 @@
             {
                 await MakePost(botClient, chatId, postResult);
             }
-            else
-            {
-
-            }
         }
 
         private async Task MakePost(ITelegramBotClient botClient, long chatId, PostCommandResult result)

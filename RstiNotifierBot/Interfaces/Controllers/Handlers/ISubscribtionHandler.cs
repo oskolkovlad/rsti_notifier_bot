@@ -4,8 +4,8 @@
 
     internal interface ISubscribtionHandler
     {
-        Task Subscribe(long chatId);
+        Task<string> Subscribe(long chatId);
 
-        Task Unsubscribe(long chatId);
+        Task<string> Unsubscribe(long chatId);
     }
 }

@@ -6,6 +6,7 @@
     using Telegram.Bot.Extensions.Polling;
     using Telegram.Bot.Types.Enums;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
+    using System.Threading.Tasks;
 
     internal class TelegramBotManager
     {
@@ -33,12 +34,11 @@
 
         public static ITelegramBotClient Client => GetClient();
 
-        public void Start()
+        public async Task Start()
         {
             try
             {
-                // Если использовать await, то приложение вылетает.
-                var botInfo = Client.GetMeAsync().Result;
+                var botInfo = await Client.GetMeAsync();
                 Console.WriteLine(StartBotMessage, botInfo.Username);
 
                 Client.StartReceiving(

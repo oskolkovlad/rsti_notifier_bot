@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
     using RstiNotifierBot.BusinessComponents;
     using RstiNotifierBot.Controllers.Commands;
     using RstiNotifierBot.Controllers.Handlers;
@@ -12,16 +13,12 @@
     {
         private static TelegramBotManager _borProvider;
 
-        private static void Main() => StartWorker();
-
-        #region Private Members
-
-        private async static void StartWorker()
+        private static async Task Main()
         {
             try
             {
                 InitializeDependencies();
-                _borProvider.Start();
+                await _borProvider.Start();
             }
             catch (Exception exception)
             {
@@ -59,7 +56,5 @@
             var botHandler = new TelegramBotHandler(commandsInvoker);
             _borProvider = new TelegramBotManager(botHandler);
         }
-
-        #endregion
     }
 }

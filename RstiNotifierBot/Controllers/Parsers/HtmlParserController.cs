@@ -28,7 +28,7 @@
             var document = new HtmlDocument();
             document.LoadHtml(htmlContent);
 
-            var items = await GetItems(document);
+            var items = GetItems(document);
             return items;
         }
 
@@ -36,7 +36,7 @@
 
         #region Protected Members
 
-        protected abstract Task<IEnumerable<T>> GetItems(HtmlDocument document);
+        protected abstract IEnumerable<T> GetItems(HtmlDocument document);
 
         protected abstract T GetItem(HtmlNode node);
 

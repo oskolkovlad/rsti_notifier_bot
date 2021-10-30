@@ -2,7 +2,6 @@
 {
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
     using Telegram.Bot;
     using Telegram.Bot.Extensions.Polling;
     using Telegram.Bot.Types.Enums;
@@ -34,10 +33,11 @@
 
         public static ITelegramBotClient Client => GetClient();
 
-        public async Task Start()
+        public void Start()
         {
             try
             {
+                // Если использовать await, то приложение вылетает.
                 var botInfo = Client.GetMeAsync().Result;
                 Console.WriteLine(StartBotMessage, botInfo.Username);
 
@@ -55,7 +55,7 @@
             }
         }
 
-        public async Task Stop()
+        public void Stop()
         {
             try
             {

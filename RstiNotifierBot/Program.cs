@@ -21,7 +21,7 @@
             try
             {
                 InitializeDependencies();
-                await _borProvider.Start();
+                _borProvider.Start();
             }
             catch (Exception exception)
             {

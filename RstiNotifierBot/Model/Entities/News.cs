@@ -13,6 +13,8 @@
             Url = url;
             ImageUrl = imageUrl;
 
+            Console.WriteLine(date);
+
             DateTime.TryParse(date, out var publishDate);
             PublishDate = publishDate;
         }

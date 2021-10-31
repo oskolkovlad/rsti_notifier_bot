@@ -5,6 +5,8 @@
 
     internal class BaseRepository
     {
+        private const string DatabaseUrlVariable = "DATABASE_URL";
+
         #region Protected Members
 
         protected string GetConnectionString()
@@ -13,7 +15,7 @@
             return Configuration.DefaultConectionString;
 #endif
 
-            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var databaseUrl = Environment.GetEnvironmentVariable(DatabaseUrlVariable);
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
 
@@ -23,7 +25,10 @@
                 Port = databaseUri.Port,
                 Username = userInfo[0],
                 Password = userInfo[1],
-                Database = databaseUri.LocalPath.TrimStart('/')
+                Database = databaseUri.LocalPath.TrimStart('/'),
+                Pooling = true,
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true
             };
 
             return builder.ToString();

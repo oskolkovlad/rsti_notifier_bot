@@ -15,7 +15,7 @@
 
         #region IBCChatProperty Members
 
-        public void Create(Chat chat) => _chatRepository.Create(chat);
+        public void Create(Chat item) => _chatRepository.Create(item);
 
         public bool IsExists(long chaId) => _chatRepository.GetChatById(chaId) != null;
 

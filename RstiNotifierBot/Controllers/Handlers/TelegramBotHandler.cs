@@ -83,6 +83,34 @@
             return new InlineKeyboardMarkup(lines);
         }
 
+        public async Task MakePost(ITelegramBotClient botClient, long chatId, PostDto post)
+        {
+            if (botClient == null || post == null)
+            {
+                return;
+            }
+
+            IReplyMarkup replyMarkup = null;
+
+            var inlineMarkup = post.InlineMarkup;
+            if (inlineMarkup != null && inlineMarkup.Any())
+            {
+                replyMarkup = CreateInlineReplyMarkup(inlineMarkup);
+            }
+
+            var message = post.Message;
+            var imageUrl = post.ImageUrl;
+
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                await botClient.SendTextMessage(chatId, message, replyMarkup);
+            }
+            else
+            {
+                await botClient.SendImageMessage(chatId, message, imageUrl, replyMarkup);
+            }
+        }
+
         #endregion
 
         #region Private Members
@@ -108,30 +136,7 @@
 
             if (result is PostCommandResult postResult)
             {
-                await MakePost(botClient, chatId, postResult);
-            }
-        }
-
-        private async Task MakePost(ITelegramBotClient botClient, long chatId, PostCommandResult result)
-        {
-            IReplyMarkup replyMarkup = null;
-
-            var inlineMarkup = result.InlineMarkup;
-            if (inlineMarkup != null && inlineMarkup.Any())
-            {
-                replyMarkup = CreateInlineReplyMarkup(inlineMarkup);
-            }
-
-            var message = result.Message;
-            var imageUrl = result.ImageUrl;
-
-            if (string.IsNullOrEmpty(imageUrl))
-            {
-                await botClient.SendTextMessage(chatId, message, replyMarkup);
-            }
-            else
-            {
-                await botClient.SendImageMessage(chatId, message, imageUrl, replyMarkup);
+                await MakePost(botClient, chatId, postResult.Post);
             }
         }
 

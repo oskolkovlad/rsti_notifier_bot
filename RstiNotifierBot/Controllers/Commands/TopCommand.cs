@@ -22,7 +22,9 @@
         public CommandResult Execute(CommandContext context)
         {
             var message = _messageHandler.GetTop5NewsMessage();
-            return new PostCommandResult(message);
+            var post = new PostDto(message);
+
+            return new PostCommandResult(post);
         }
 
         #endregion

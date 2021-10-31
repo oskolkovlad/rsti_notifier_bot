@@ -21,6 +21,9 @@
 
         #region Public Members
 
+        public string GetNewsMessage(News item) =>
+            item != null ? ConstructMessage(item, false) : NewsNotFoundMessages;
+
         public (string message, string url, string imageUrl) GetLastNewsMessage()
         {
             string message;

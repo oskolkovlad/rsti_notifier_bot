@@ -7,20 +7,20 @@
 
     internal class BCSchedulerTasks : IBCSchedulerTasks
     {
-        private readonly IDictionary<long, Timer> _timers;
+        private readonly IDictionary<string, Timer> _timers;
 
         private static readonly object _lockOblect = new object();
         
         public BCSchedulerTasks()
         {
-            _timers = new Dictionary<long, Timer>();
+            _timers = new Dictionary<string, Timer>();
         }
 
         #region IBCSchedulerJob Members
 
-        public void ScheduleTask(long chatId, Action task, int dueTime = 0, int period = 300)
+        public void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 300)
         {
-            if (_timers.ContainsKey(chatId))
+            if (_timers.ContainsKey(taskId))
             {
                 return;
             }
@@ -30,7 +30,7 @@
 
             lock (_lockOblect)
             {
-                _timers.Add(chatId, timer);
+                _timers.Add(taskId, timer);
             }
 
             var dueTimeSpan = new TimeSpan(0, 0, dueTime);
@@ -38,18 +38,18 @@
             timer.Change(dueTimeSpan, periodSpan);
         }
 
-        public void StopTask(long chatId)
+        public void StopTask(string taskId)
         {
-            if (!_timers.ContainsKey(chatId))
+            if (!_timers.ContainsKey(taskId))
             {
                 return;
             }
 
-            var timer = _timers[chatId];
+            var timer = _timers[taskId];
 
             lock (_lockOblect)
             {
-                _timers.Remove(chatId);
+                _timers.Remove(taskId);
             }
 
             timer.Change(Timeout.Infinite, Timeout.Infinite);

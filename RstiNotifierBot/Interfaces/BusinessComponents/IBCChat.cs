@@ -2,9 +2,9 @@
 {
     using RstiNotifierBot.Model.Entities;
 
-    internal interface IBCChat
+    internal interface IBCChat : IBCComponent
     {
-        void Create(Chat chat);
+        void Create(Chat item);
 
         bool IsExists(long chaId);
 

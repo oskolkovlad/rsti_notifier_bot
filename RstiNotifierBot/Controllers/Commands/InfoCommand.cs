@@ -1,23 +1,20 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
-    using System.Collections.Generic;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
     using RstiNotifierBot.Interfaces.Controllers.Commands;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
-    using RstiNotifierBot.Properties;
 
     internal class InfoCommand : ICommand
     {
-        private const string AllNewsCaption = "Все новости";
-        private const string InstagramCaption = "Инстаграм";
-
         private readonly IMessageHandler _messageHandler;
+        private readonly IInlineMarkupHandler _inlineMarkupHandler;
 
-        public InfoCommand(IMessageHandler messageHandler)
+        public InfoCommand(IMessageHandler messageHandler, IInlineMarkupHandler inlineMarkupHandler)
         {
             _messageHandler = messageHandler;
+            _inlineMarkupHandler = inlineMarkupHandler;
         }
 
         #region ICommand Members
@@ -26,17 +23,11 @@
 
         public CommandResult Execute(CommandContext context)
         {
-            var post = _messageHandler.GetContactInfoMessage();
-            var inlineMarkup = new List<List<InlineButtonDto>>
-            {
-                new List<InlineButtonDto>
-                {
-                    new InlineButtonDto(AllNewsCaption, Resources.NewsUrl),
-                    new InlineButtonDto(InstagramCaption, Resources.InstagramUrl)
-                }
-            };
+            var message = _messageHandler.GetContactInfoMessage();
+            var inlineMarkup = _inlineMarkupHandler.GetInfoReplyMarkup();
+            var post = new PostDto(message, inlineMarkup: inlineMarkup);
 
-            return new PostCommandResult(post, inlineMarkup: inlineMarkup);
+            return new PostCommandResult(post);
         }
 
         #endregion

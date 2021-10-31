@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
-    using System.Collections.Generic;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
     using RstiNotifierBot.Dto.Commands;
@@ -9,13 +8,13 @@
 
     internal class LastCommand : ICommand
     {
-        private const string LinkCaption = "Перейти";
-
         private readonly IMessageHandler _messageHandler;
+        private readonly IInlineMarkupHandler _inlineMarkupHandler;
 
-        public LastCommand(IMessageHandler messageHandler)
+        public LastCommand(IMessageHandler messageHandler, IInlineMarkupHandler inlineMarkupHandler)
         {
             _messageHandler = messageHandler;
+            _inlineMarkupHandler = inlineMarkupHandler;
         }
 
         #region ICommand Members
@@ -25,12 +24,10 @@
         public CommandResult Execute(CommandContext context)
         {
             var (message, url, imageUrl) = _messageHandler.GetLastNewsMessage();
-            var inlineMarkup = new List<List<InlineButtonDto>>
-            {
-                new List<InlineButtonDto> { new InlineButtonDto(LinkCaption, url) }
-            };
+            var inlineMarkup = _inlineMarkupHandler.GetPostReplyMarkup(url);
+            var post = new PostDto(message, imageUrl, inlineMarkup);
 
-            return new PostCommandResult(message, imageUrl, inlineMarkup);
+            return new PostCommandResult(post);
         }
 
         #endregion

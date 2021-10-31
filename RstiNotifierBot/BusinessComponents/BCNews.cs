@@ -1,5 +1,6 @@
 ﻿namespace RstiNotifierBot.BusinessComponents
 {
+    using System.Collections.Generic;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Model.Repositories;
     using RstiNotifierBot.Model.Entities;
@@ -15,10 +16,11 @@
 
         #region IBCNewsProperty Members
 
-        public News GetLastNewsItem()
-        {
-            return null;
-        }
+        public void Create(News item) => _newsRepository.Create(item);
+
+        public IEnumerable<News> GetNewsItems() => _newsRepository.GetNews();
+
+        public IEnumerable<News> GetLastNewsItems(int count = 15) => _newsRepository.GetLastNews(count);
 
         #endregion
     }

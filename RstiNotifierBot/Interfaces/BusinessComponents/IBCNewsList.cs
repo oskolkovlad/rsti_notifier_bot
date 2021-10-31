@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using RstiNotifierBot.Model.Entities;
 
-    internal interface IBCNewsList
+    internal interface IBCNewsList : IBCComponent
     {
         Task<News> GetLastNewsItem(string url);
 

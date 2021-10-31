@@ -5,10 +5,10 @@
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
     using RstiNotifierBot.Model.Entities;
+    using RstiNotifierBot.Properties;
 
     internal class SubscriptionHandler : ISubscriptionHandler
     {
-        private const string SubscriptionPropertyName = "Subscription";
         private const string SubscribedMessage ="Подписка оформлена!";
         private const string UnsubscribedMessage = "Вы отписались от новостной рассылки. Будем ждать вас еще!";
         private const string AlreadySubscribedMessage =
@@ -53,7 +53,7 @@
             }
             else
             {
-                _bcChatProperty.Delete(chatId, SubscriptionPropertyName);
+                _bcChatProperty.Delete(chatId, Resources.SubscriptionPropertyName);
                 message = UnsubscribedMessage;
             }
 
@@ -67,11 +67,11 @@
         private ChatProperty CreateSubscriptionProperty(long chatId)
         {
             var id = Guid.NewGuid().ToString().Clear("-");
-            return new ChatProperty(id, chatId, SubscriptionPropertyName, true.ToString());
+            return new ChatProperty(id, chatId, Resources.SubscriptionPropertyName, true.ToString());
         }
 
         private bool IsSubscriptionAlreadyDone(long chatId) =>
-            _bcChatProperty.IsExists(chatId, SubscriptionPropertyName, true.ToString());
+            _bcChatProperty.IsExists(chatId, Resources.SubscriptionPropertyName, true.ToString());
 
         #endregion
     }

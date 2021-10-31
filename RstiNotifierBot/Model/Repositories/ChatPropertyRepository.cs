@@ -1,5 +1,6 @@
 ﻿namespace RstiNotifierBot.Model.Repositories
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Dapper;
     using Npgsql;
@@ -12,9 +13,12 @@
         #region SQL Queries
 
         private const string InsertPropertyQuery =
-            @"insert into chatproperty (chatid, name, value)
-            values (@ChatId, @Name, @Value)";
+            @"insert into chatproperty values(@ChatPropertyId, @ChatId, @Name, @Value)";
 
+        private const string GetPropertiesQuery =
+            @"select * from chatproperty
+            where name = @name and value = @value";
+        
         private const string GetPropertyQuery =
             @"select * from chatproperty
             where chatid = @chatId and name = @name and value = @value";
@@ -26,11 +30,18 @@
 
         #region IChatPropertyRepository Members
 
-        public void Create(ChatProperty chatProperty)
+        public void Create(ChatProperty item)
         {
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(InsertPropertyQuery, chatProperty);
+            connection.Execute(InsertPropertyQuery, item);
+        }
+
+        public IList<ChatProperty> GetProperties(string name, string value)
+        {
+            var connectionString = GetConnectionString();
+            using var connection = new NpgsqlConnection(connectionString);
+            return connection.Query<ChatProperty>(GetPropertiesQuery, new { name, value }).ToList();
         }
 
         public ChatProperty GetProperty(long chatId, string name, string value)

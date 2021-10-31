@@ -2,10 +2,10 @@
 {
     using System;
 
-    internal interface IBCSchedulerTasks
+    internal interface IBCSchedulerTasks : IBCComponent
     {
-        void ScheduleTask(long chatId, Action task, int dueTime = 0, int period = 300);
+        void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 300);
 
-        void StopTask(long chatId);
+        void StopTask(string taskId);
     }
 }

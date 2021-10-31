@@ -5,9 +5,11 @@
 
     internal interface INewsRepository
     {
-        void Create(News news);
+        void Create(News item);
 
         IList<News> GetNews();
+
+        IList<News> GetLastNews(int count = 15);
 
         News GetNewsById(string newsId);
     }

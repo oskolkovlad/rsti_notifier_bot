@@ -1,9 +1,14 @@
 ﻿namespace RstiNotifierBot.Interfaces.BusinessComponents
 {
+    using System.Collections.Generic;
     using RstiNotifierBot.Model.Entities;
 
-    internal interface IBCNews
+    internal interface IBCNews : IBCComponent
     {
-        News GetLastNewsItem();
+        void Create(News item);
+
+        IEnumerable<News> GetNewsItems();
+
+        IEnumerable<News> GetLastNewsItems(int count = 15);
     }
 }

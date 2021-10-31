@@ -2,7 +2,7 @@
 {
     using RstiNotifierBot.Model.Entities;
 
-    internal interface ISubscriptionHandler
+    internal interface ISubscriptionHandler : IHandler
     {
         string Subscribe(long chatId);
 

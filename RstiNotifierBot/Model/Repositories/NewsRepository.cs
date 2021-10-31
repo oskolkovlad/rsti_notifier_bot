@@ -13,10 +13,13 @@
         #region SQL Queries
 
         private const string InsertNewsQuery =
-            @"insert into news values (@NewsId, @Title, @Preview, @Url, @ImageUrl, @PublishDate)";
+            @"insert into news(title, preview, url, imageUrl, publishDate)
+            values(@NewsId, @Title, @Preview, @Url, @ImageUrl, @PublishDate)";
 
         private const string GetNewsQuery =
             @"select * from news";
+
+        private readonly string GetLastNewsQuery = $"{GetNewsQuery} limit {0}";
 
         private const string GetNewsByIdQuery =
             @"select * from news where newsid = @newsId";
@@ -25,11 +28,11 @@
 
         #region INewsRepository Members
 
-        public void Create(News news)
+        public void Create(News item)
         {
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(InsertNewsQuery, news);
+            connection.Execute(InsertNewsQuery, item);
         }
 
         public IList<News> GetNews()
@@ -37,6 +40,13 @@
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
             return connection.Query<News>(GetNewsQuery).ToList();
+        }
+
+        public IList<News> GetLastNews(int count = 15)
+        {
+            var connectionString = GetConnectionString();
+            using var connection = new NpgsqlConnection(connectionString);
+            return connection.Query<News>(string.Format(GetLastNewsQuery, count)).ToList();
         }
 
         public News GetNewsById(string newsId)

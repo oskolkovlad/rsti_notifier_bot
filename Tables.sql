@@ -36,7 +36,7 @@ comment on column chatproperty.value is 'Значение';
 
 create table news
 (
-	newsid varchar(32) not null,
+	newsid serial not null,
 	title text not null,
 	preview text,
 	url text not null,
@@ -47,7 +47,7 @@ create table news
 );
 
 comment on table news is 'Список опубликованных новостей';
-comment on column news.newsid is 'Идентификатор';
+comment on column news.newsid is 'Идентификатор и порядковый номер';
 comment on column news.title is 'Заголовок';
 comment on column news.preview is 'Краткий пересказ';
 comment on column news.url  is 'Ссылка';

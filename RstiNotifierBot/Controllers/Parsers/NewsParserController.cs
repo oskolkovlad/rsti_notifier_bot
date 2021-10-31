@@ -11,7 +11,7 @@
         #region HtmlParserController Members
 
         protected override IEnumerable<News> GetItems(HtmlDocument document) =>
-            document.DocumentNode.SelectNodes(NewsElements.News).Take(5).Select(GetItem);
+            document.DocumentNode.SelectNodes(NewsElements.News).Take(15).Select(GetItem);
 
         protected override News GetItem(HtmlNode node)
         {

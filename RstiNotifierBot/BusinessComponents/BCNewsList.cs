@@ -22,14 +22,14 @@
         public async Task<News> GetLastNewsItem(string url)
         {
             var items = await GetNewsItems(url);
-            return items.FirstOrDefault();
+            return items.LastOrDefault();
         }
 
         public async Task<IEnumerable<News>> GetNewsItems(string url)
         {
             try
             {
-                var items = await _parserController.Parse(url);
+                var items = (await _parserController.Parse(url)).Reverse();
                 return items;
             }
             catch (Exception ex)

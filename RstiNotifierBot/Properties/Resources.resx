@@ -137,4 +137,7 @@
   <data name="NewsUrl" xml:space="preserve">
     <value>https://rsti.ru/news</value>
   </data>
+  <data name="SubscriptionPropertyName" xml:space="preserve">
+    <value>Subscription</value>
+  </data>
 </root>

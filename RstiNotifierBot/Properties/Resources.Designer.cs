@@ -97,5 +97,14 @@ namespace RstiNotifierBot.Properties {
                 return ResourceManager.GetString("NewsUrl", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Subscription.
+        /// </summary>
+        internal static string SubscriptionPropertyName {
+            get {
+                return ResourceManager.GetString("SubscriptionPropertyName", resourceCulture);
+            }
+        }
     }
 }

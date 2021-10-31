@@ -7,18 +7,21 @@
     using RstiNotifierBot.Controllers.Commands;
     using RstiNotifierBot.Controllers.Handlers;
     using RstiNotifierBot.Controllers.Parsers;
+    using RstiNotifierBot.Controllers.Services;
+    using RstiNotifierBot.Interfaces.Controllers.Services;
     using RstiNotifierBot.Model.Repositories;
 
     internal class Program
     {
-        private static TelegramBotManager _borProvider;
+        private static TelegramBotManager _botManager;
+        private static IService _newsTrackingService;
 
         private static async Task Main()
         {
             try
             {
                 InitializeDependencies();
-                await _borProvider.Start();
+                await StartWork();
             }
             catch (Exception exception)
             {
@@ -30,8 +33,8 @@
 
         private static void InitializeDependencies()
         {
-            var newsParserController = new NewsParserController();
-            var bcNewsList = new BCNewsList(newsParserController);
+            var parserController = new NewsParserController();
+            var bcNewsList = new BCNewsList(parserController);
             var bcSchedulerTasks = new BCSchedulerTasks();
             
             var chatRepository = new ChatRepository();
@@ -42,19 +45,30 @@
             var bcNews = new BCNews(newsRepository);
 
             var messageHandler = new MessageHandler(bcNewsList);
+            var inlineMarkupHandler = new InlineMarkupHandler();
             var subscriptionHandler = new SubscriptionHandler(bcChatProperty);
 
             var startCommand = new StartCommand(bcChat);
-            var lastCommand = new LastCommand(messageHandler);
+            var lastCommand = new LastCommand(messageHandler, inlineMarkupHandler);
             var topCommand = new TopCommand(messageHandler);
             var subscribeCommand = new SubscribeCommand(subscriptionHandler);
             var unsubscribeCommand = new UnsubscribeCommand(subscriptionHandler);
-            var infoCommand = new InfoCommand(messageHandler);
+            var infoCommand = new InfoCommand(messageHandler, inlineMarkupHandler);
             var commandsInvoker = new CommandsInvoker(startCommand, lastCommand, topCommand,
                 subscribeCommand, unsubscribeCommand, infoCommand);
 
             var botHandler = new TelegramBotHandler(commandsInvoker);
-            _borProvider = new TelegramBotManager(botHandler);
+            _botManager = new TelegramBotManager(botHandler);
+
+            _newsTrackingService = new NewsTrackingService(TelegramBotManager.Client, botHandler,
+                messageHandler, inlineMarkupHandler, bcNews, bcNewsList, bcChatProperty, bcSchedulerTasks);
+        }
+
+        private static async Task StartWork()
+        {
+            await _botManager.Start();
+
+            _newsTrackingService.Start();
         }
     }
 }

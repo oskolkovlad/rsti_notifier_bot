@@ -13,7 +13,7 @@
         #region SQL Queries
 
         private const string InsertChatQuery =
-            @"insert into chat values (@ChatId, @Username, @FirstName, @LastName)";
+            @"insert into chat values(@ChatId, @Username, @FirstName, @LastName)";
 
         private const string GetChatsQuery =
             @"select* from chat";
@@ -33,11 +33,11 @@
 
         #region IChatRepository Members
 
-        public void Create(Chat chat)
+        public void Create(Chat item)
         {
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(InsertChatQuery, chat);
+            connection.Execute(InsertChatQuery, item);
         }
 
         public IList<Chat> GetChats()
@@ -54,11 +54,11 @@
             return connection.Query<Chat>(GetChatByIdQuery, new { chatId }).FirstOrDefault();
         }
 
-        public void Update(Chat chat)
+        public void Update(Chat item)
         {
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(UpdateChatQuery, chat);
+            connection.Execute(UpdateChatQuery, item);
         }
 
         public void Delete(long chatId)

@@ -5,13 +5,13 @@
 
     internal interface IChatRepository
     {
-        void Create(Chat chat);
+        void Create(Chat item);
 
         IList<Chat> GetChats();
 
         Chat GetChatById(long chatId);
 
-        void Update(Chat chat);
+        void Update(Chat item);
 
         void Delete(long chatId);
     }

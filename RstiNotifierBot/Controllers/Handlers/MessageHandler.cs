@@ -72,13 +72,11 @@
 
         private static string ConstructMessage(News item, bool appendLink = true)
         {
-            if (item == null)
-            {
-                return null;
-            }
-
             var message = new StringBuilder();
             message.AppendLine($"`{item?.PublishDate.ToShortDateString()}`");
+            Console.WriteLine($"`{item?.PublishDate.ToString()}`");
+            Console.WriteLine($"`{item?.PublishDate.ToLongDateString()}`");
+            Console.WriteLine($"`{item?.PublishDate.ToShortDateString()}`");
             message.AppendLine($"*{item?.Title}*");
             message.AppendLine(item?.Preview);
             if (appendLink)

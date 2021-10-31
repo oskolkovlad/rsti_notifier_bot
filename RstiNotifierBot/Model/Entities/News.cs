@@ -17,6 +17,8 @@
 
             DateTime.TryParse(date, out var publishDate);
             PublishDate = publishDate;
+
+            Console.WriteLine($"Day: {publishDate.Day}; Month: {publishDate.Month}; Year: {publishDate.Year}; Full date: {publishDate.Date}");
         }
 
         public string NewsId { get; set; }

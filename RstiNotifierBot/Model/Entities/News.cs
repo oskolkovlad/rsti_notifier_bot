@@ -16,30 +16,32 @@
 
             if (DateTime.TryParse(date, out var publishDate))
             {
-                Console.WriteLine(CultureInfo.CurrentCulture.Name);
+                Console.WriteLine(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
 
                 var cultureInfo = new CultureInfo("ru-RU", false);
 
                 var publishDate1 = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd/mm/yy", cultureInfo);
-                Console.WriteLine("1" + publishDate1.ToString("dd.mm.yy"));
-                Console.WriteLine("1" + publishDate1.ToString("dd.mm.yyyy"));
+                Console.WriteLine("1 " + publishDate1.ToString("dd.mm.yy"));
+                Console.WriteLine("1 " + publishDate1.ToString("dd.mm.yyyy"));
 
                 var publishDate2 = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yy", cultureInfo);
-                Console.WriteLine("2" + publishDate2.ToString("dd.mm.yy"));
-                Console.WriteLine("2" + publishDate2.ToString("dd.mm.yyyy"));
+                Console.WriteLine("2 " + publishDate2.ToString("dd.mm.yy"));
+                Console.WriteLine("2 " + publishDate2.ToString("dd.mm.yyyy"));
 
                 var publishDate3 = DateTime.ParseExact(date, "dd/mm/yy", cultureInfo);
-                Console.WriteLine("3" + publishDate3.ToString("dd.mm.yy"));
-                Console.WriteLine("3" + publishDate3.ToString("dd.mm.yyyy"));
+                Console.WriteLine("3 " + publishDate3.ToString("dd.mm.yy"));
+                Console.WriteLine("3 " + publishDate3.ToString("dd.mm.yyyy"));
 
                 var publishDate4 = DateTime.ParseExact(date, "dd.mm.yy", cultureInfo);
-                Console.WriteLine("4" + publishDate4.ToString("dd.mm.yy"));
-                Console.WriteLine("4" + publishDate4.ToString("dd.mm.yyyy"));
+                Console.WriteLine("4 " + publishDate4.ToString("dd.mm.yy"));
+                Console.WriteLine("4 " + publishDate4.ToString("dd.mm.yyyy"));
 
                 publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yy", cultureInfo);
                 
                 DateTime.TryParse(date.Replace("&nbsp;", null), cultureInfo, DateTimeStyles.None, out var ppp);
-                Console.WriteLine("5" + ppp.ToString("dd.mm.yy"));
+                Console.WriteLine("5 " + ppp.ToString("dd.mm.yy"));
+
+                Console.WriteLine();
             }
             PublishDate = publishDate;
         }

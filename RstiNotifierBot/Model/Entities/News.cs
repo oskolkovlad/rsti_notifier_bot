@@ -14,27 +14,10 @@
             Url = url;
             ImageUrl = imageUrl;
 
-            //***//
-
-            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var publishDate1);
-            Console.WriteLine(publishDate1);
-            Console.WriteLine();
-            DateTime.TryParse(date, CultureInfo.CurrentCulture, DateTimeStyles.None, out var publishDate2);
-            Console.WriteLine(publishDate2);
-            Console.WriteLine();
-            DateTime.TryParse(date, CultureInfo.DefaultThreadCurrentCulture, DateTimeStyles.None, out var publishDate3);
-            Console.WriteLine(publishDate3);
-            Console.WriteLine();
-            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var publishDate4);
-            Console.WriteLine(publishDate4);
-            Console.WriteLine();
-            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out var publishDate5);
-            Console.WriteLine(publishDate5);
-            Console.WriteLine();
-
-            //***//
-
-            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var publishDate);
+            if (DateTime.TryParse(date, out var publishDate))
+            {
+                publishDate = DateTime.ParseExact(date, "dd.mm.yyyy", CultureInfo.InvariantCulture);
+            }
             PublishDate = publishDate;
         }
 

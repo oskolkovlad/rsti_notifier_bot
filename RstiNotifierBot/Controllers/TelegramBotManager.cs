@@ -40,7 +40,7 @@
 
             Console.WriteLine(new string('=', 50));
             Console.WriteLine(StartBotMessage, botInfo.Username);
-            Console.WriteLine(string.Concat(Environment.NewLine, new string('=', 50)));
+            Console.WriteLine(string.Concat(new string('=', 50), Environment.NewLine));
 
             Client.StartReceiving(
                 new DefaultUpdateHandler(

@@ -14,9 +14,9 @@ comment on table chat is 'Список подключенных к боту ча
 comment on column chat.chatid is 'Идентификатор';
 comment on column chat.username is 'Никнейм';
 comment on column chat.firstname is 'Имя';
-comment on column chat.lastname  is 'Фамилия';
-comment on column chat.title  is 'Заголовок';
-comment on column chat.type  is 'Тип';
+comment on column chat.lastname is 'Фамилия';
+comment on column chat.title is 'Заголовок';
+comment on column chat.type is 'Тип';
 
 ---
 
@@ -27,7 +27,10 @@ create table chatproperty
 	name varchar(100) not null,
 	value varchar(100) not null,
 
-	constraint pk_chatproperty primary key (chatpropertyid)
+	constraint pk_chatproperty primary key (chatpropertyid),
+	constraint fk_chat_chatproperty foreign key (chatid)
+		references chat(chatid) match simple
+      	on update restrict on delete cascade
 );
 
 comment on table chatproperty is 'Список подключенных к боту чатов';
@@ -54,6 +57,6 @@ comment on table news is 'Список опубликованных новост
 comment on column news.newsid is 'Идентификатор и порядковый номер';
 comment on column news.title is 'Заголовок';
 comment on column news.preview is 'Краткий пересказ';
-comment on column news.url  is 'Ссылка';
-comment on column news.imageurl  is 'Ссылка на картинку';
-comment on column news.publishdate  is 'Дата публикации';
+comment on column news.url is 'Ссылка';
+comment on column news.imageurl is 'Ссылка на картинку';
+comment on column news.publishdate is 'Дата публикации';

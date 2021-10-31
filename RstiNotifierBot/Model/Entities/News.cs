@@ -17,7 +17,7 @@
             if (DateTime.TryParse(date, out var publishDate))
             {
                 var cultureInfo = new CultureInfo("ru-RU", false);
-                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd/mm/yy", cultureInfo);
+                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yy", cultureInfo);
             }
             PublishDate = publishDate;
         }

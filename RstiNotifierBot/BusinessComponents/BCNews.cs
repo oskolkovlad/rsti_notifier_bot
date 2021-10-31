@@ -1,6 +1,7 @@
 ﻿namespace RstiNotifierBot.BusinessComponents
 {
     using System.Collections.Generic;
+    using System.Linq;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Model.Repositories;
     using RstiNotifierBot.Model.Entities;
@@ -20,7 +21,8 @@
 
         public IEnumerable<News> GetNewsItems() => _newsRepository.GetNews();
 
-        public IEnumerable<News> GetLastNewsItems(int count = 15) => _newsRepository.GetLastNews(count);
+        public IEnumerable<News> GetLastNewsItems(int count = 15) =>
+            _newsRepository.GetLastNews(count).Reverse();
 
         #endregion
     }

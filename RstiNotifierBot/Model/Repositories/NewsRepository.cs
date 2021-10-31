@@ -14,12 +14,12 @@
 
         private const string InsertNewsQuery =
             @"insert into news(title, preview, url, imageUrl, publishDate)
-            values(@NewsId, @Title, @Preview, @Url, @ImageUrl, @PublishDate)";
+            values(@Title, @Preview, @Url, @ImageUrl, @PublishDate)";
 
         private const string GetNewsQuery =
             @"select * from news";
 
-        private readonly string GetLastNewsQuery = $"{GetNewsQuery} limit {0}";
+        private readonly string GetLastNewsQuery = "{0} order by newsid desc limit {1}";
 
         private const string GetNewsByIdQuery =
             @"select * from news where newsid = @newsId";
@@ -46,7 +46,8 @@
         {
             var connectionString = GetConnectionString();
             using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<News>(string.Format(GetLastNewsQuery, count)).ToList();
+            var sqlQuery = string.Format(GetLastNewsQuery, GetNewsQuery, count);
+            return connection.Query<News>(sqlQuery).ToList();
         }
 
         public News GetNewsById(string newsId)

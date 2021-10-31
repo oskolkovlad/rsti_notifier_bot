@@ -4,6 +4,8 @@
 
     internal class News
     {
+        public News() { }
+
         public News(string title, string preview, string date, string url, string imageUrl)
         {
             Title = title;

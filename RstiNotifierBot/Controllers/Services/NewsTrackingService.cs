@@ -81,25 +81,20 @@
             var lastNewsItems = _bCNews.GetLastNewsItems().ToList();
             if (lastNewsItems.Count == 0)
             {
-                Parallel.ForEach(currentLastNewsItems, x =>
+                foreach (var currentLastNewsItem in currentLastNewsItems)
                 {
-                    _bCNews.Create(x);
-                    addedNewsItems.Add(x);
-                });
+                    _bCNews.Create(currentLastNewsItem);
+                    addedNewsItems.Add(currentLastNewsItem);
+                }
             }
             else
             {
                 foreach (var currentLastNewsItem in currentLastNewsItems)
                 {
-                    foreach (var lastNewsItem in lastNewsItems)
+                    if (lastNewsItems.All(x => x.PublishDate != currentLastNewsItem.PublishDate &&
+                        x.Url != currentLastNewsItem.Url &&
+                        x.Title != currentLastNewsItem.Title))
                     {
-                        if (currentLastNewsItem.PublishDate == lastNewsItem.PublishDate &&
-                            currentLastNewsItem.Url == lastNewsItem.Url &&
-                            currentLastNewsItem.Title == lastNewsItem.Title)
-                        {
-                            continue;
-                        }
-
                         _bCNews.Create(currentLastNewsItem);
                         addedNewsItems.Add(currentLastNewsItem);
                     }

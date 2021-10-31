@@ -38,7 +38,7 @@
         {
             string message = null;
 
-            var items = _bcNewsList.GetNewsItems(Resources.NewsUrl).Result.ToList();
+            var items = _bcNewsList.GetNewsItems(Resources.NewsUrl, false).Result.ToList();
             if (items.Any())
             {
                 for (var i = 0; i < 5; i++)

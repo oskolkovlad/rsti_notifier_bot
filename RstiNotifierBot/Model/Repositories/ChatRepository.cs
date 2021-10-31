@@ -13,7 +13,7 @@
         #region SQL Queries
 
         private const string InsertChatQuery =
-            @"insert into chat values(@ChatId, @Username, @FirstName, @LastName)";
+            @"insert into chat values(@ChatId, @Username, @FirstName, @LastName, @Title, @Type)";
 
         private const string GetChatsQuery =
             @"select* from chat";

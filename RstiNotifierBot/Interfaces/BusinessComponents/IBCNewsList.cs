@@ -8,6 +8,6 @@
     {
         Task<News> GetLastNewsItem(string url);
 
-        Task<IEnumerable<News>> GetNewsItems(string url);
+        Task<IEnumerable<News>> GetNewsItems(string url, bool reverse = true);
     }
 }

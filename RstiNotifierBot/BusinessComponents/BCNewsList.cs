@@ -25,12 +25,12 @@
             return items.LastOrDefault();
         }
 
-        public async Task<IEnumerable<News>> GetNewsItems(string url)
+        public async Task<IEnumerable<News>> GetNewsItems(string url, bool reverse = true)
         {
             try
             {
-                var items = (await _parserController.Parse(url)).Reverse();
-                return items;
+                var items = await _parserController.Parse(url);
+                return reverse ? items.Reverse() : items;
             }
             catch (Exception ex)
             {

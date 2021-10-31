@@ -23,7 +23,8 @@
         public CommandResult Execute(CommandContext context)
         {
             var chatInfo = context.Chat;
-            var chat = new Chat(chatInfo.Id, chatInfo.Username, chatInfo.FirstName, chatInfo.LastName);
+            var chat = new Chat(chatInfo.Id, chatInfo.Username, chatInfo.FirstName, chatInfo.LastName,
+                chatInfo.Title, chatInfo.Type.ToString());
 
             if (!_bcChat.IsExists(chat.ChatId))
             {

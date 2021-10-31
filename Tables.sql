@@ -4,6 +4,8 @@ create table chat
 	username varchar(100) not null,
 	firstname varchar(300),
 	lastname varchar(300),
+	title varchar(300),
+	type varchar(10) not null,
 
 	constraint pk_chat primary key (chatid)
 );
@@ -13,6 +15,8 @@ comment on column chat.chatid is 'Идентификатор';
 comment on column chat.username is 'Никнейм';
 comment on column chat.firstname is 'Имя';
 comment on column chat.lastname  is 'Фамилия';
+comment on column chat.title  is 'Заголовок';
+comment on column chat.type  is 'Тип';
 
 ---
 

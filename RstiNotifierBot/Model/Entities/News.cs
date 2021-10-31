@@ -16,9 +16,12 @@
 
             if (DateTime.TryParse(date, out var publishDate))
             {
+                Console.WriteLine();
+
                 Console.WriteLine(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
 
-                var cultureInfo = new CultureInfo("ru-RU", false);
+                var cultureInfo = new CultureInfo("ru-US", true);
+                Console.WriteLine(cultureInfo.DateTimeFormat.ShortDatePattern);
 
                 var publishDate1 = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd/mm/yy", cultureInfo);
                 Console.WriteLine("1 " + publishDate1.ToString("dd.mm.yy"));
@@ -38,9 +41,6 @@
 
                 publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yy", cultureInfo);
                 
-                DateTime.TryParse(date.Replace("&nbsp;", null), cultureInfo, DateTimeStyles.None, out var ppp);
-                Console.WriteLine("5 " + ppp.ToString("dd.mm.yy"));
-
                 Console.WriteLine();
             }
             PublishDate = publishDate;

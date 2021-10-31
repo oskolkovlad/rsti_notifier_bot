@@ -1,8 +1,7 @@
-﻿using System.Globalization;
-
-namespace RstiNotifierBot.Model.Entities
+﻿namespace RstiNotifierBot.Model.Entities
 {
     using System;
+    using System.Globalization;
 
     internal class News
     {
@@ -14,6 +13,26 @@ namespace RstiNotifierBot.Model.Entities
             Preview = preview;
             Url = url;
             ImageUrl = imageUrl;
+
+            //***//
+
+            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var publishDate1);
+            Console.WriteLine(publishDate1);
+            Console.WriteLine();
+            DateTime.TryParse(date, CultureInfo.CurrentCulture, DateTimeStyles.None, out var publishDate2);
+            Console.WriteLine(publishDate2);
+            Console.WriteLine();
+            DateTime.TryParse(date, CultureInfo.DefaultThreadCurrentCulture, DateTimeStyles.None, out var publishDate3);
+            Console.WriteLine(publishDate3);
+            Console.WriteLine();
+            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var publishDate4);
+            Console.WriteLine(publishDate4);
+            Console.WriteLine();
+            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.NoCurrentDateDefault, out var publishDate5);
+            Console.WriteLine(publishDate5);
+            Console.WriteLine();
+
+            //***//
 
             DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var publishDate);
             PublishDate = publishDate;

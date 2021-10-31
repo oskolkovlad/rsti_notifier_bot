@@ -128,7 +128,7 @@
                     {
                         Text = buttonInLine.Text,
                         Url = buttonInLine.Url,
-                        CallbackData = buttonInLine.CallbackData,
+                        CallbackData = buttonInLine.CallbackData
                     };
 
                     line.Add(button);
@@ -139,6 +139,33 @@
 
             return new InlineKeyboardMarkup(lines);
         }
+
+        // TODO: не доделано.
+        private static IReplyMarkup CreateReplyKeyboardMarkup(string[][] keyboardMarkup)
+        {
+            var lines = new List<List<KeyboardButton>>();
+
+            foreach (var buttonsLine in keyboardMarkup)
+            {
+                var line = new List<KeyboardButton>();
+
+                foreach (var buttonInLine in buttonsLine)
+                {
+                    var button = new KeyboardButton
+                    {
+                        Text = buttonInLine
+                    };
+
+                    line.Add(button);
+                }
+
+                lines.Add(line);
+            }
+
+            return new ReplyKeyboardMarkup(lines);
+        }
+
+        private static IReplyMarkup RemoveReplyKeyboardMarkup() => new ReplyKeyboardRemove();
 
         #endregion
     }

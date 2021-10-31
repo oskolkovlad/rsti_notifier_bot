@@ -73,7 +73,7 @@
         private static string ConstructMessage(News item, bool appendLink = true)
         {
             var message = new StringBuilder();
-            message.AppendLine($"`{item?.PublishDate.ToShortDateString()}`");
+            message.AppendLine($"`{item?.PublishDate:dd.mm.yyyy}`");
             message.AppendLine($"*{item?.Title}*");
             message.AppendLine(item?.Preview);
             if (appendLink)

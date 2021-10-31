@@ -67,11 +67,11 @@
         private ChatProperty CreateSubscriptionProperty(long chatId)
         {
             var id = Guid.NewGuid().ToString().Clear("-");
-            return new ChatProperty(id, chatId, Resources.SubscriptionPropertyName, true.ToString());
+            return new ChatProperty(id, chatId, Resources.SubscriptionPropertyName, true.ToString().ToLower());
         }
 
         private bool IsSubscriptionAlreadyDone(long chatId) =>
-            _bcChatProperty.IsExists(chatId, Resources.SubscriptionPropertyName, true.ToString());
+            _bcChatProperty.IsExists(chatId, Resources.SubscriptionPropertyName, true.ToString().ToLower());
 
         #endregion
     }

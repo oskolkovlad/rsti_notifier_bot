@@ -73,7 +73,7 @@
             var currentLastNewsItems = (await _bCNewsList.GetNewsItems(Resources.NewsUrl)).ToList();
             if (currentLastNewsItems.Count == 0)
             {
-                return null;
+                return Enumerable.Empty<News>();
             }
 
             var addedNewsItems = new List<News>();

@@ -74,9 +74,6 @@
         {
             var message = new StringBuilder();
             message.AppendLine($"`{item?.PublishDate.ToShortDateString()}`");
-            Console.WriteLine($"`{item?.PublishDate.ToString()}`");
-            Console.WriteLine($"`{item?.PublishDate.ToLongDateString()}`");
-            Console.WriteLine($"`{item?.PublishDate.ToShortDateString()}`");
             message.AppendLine($"*{item?.Title}*");
             message.AppendLine(item?.Preview);
             if (appendLink)

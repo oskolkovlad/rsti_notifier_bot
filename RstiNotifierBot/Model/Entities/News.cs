@@ -1,4 +1,6 @@
-﻿namespace RstiNotifierBot.Model.Entities
+﻿using System.Globalization;
+
+namespace RstiNotifierBot.Model.Entities
 {
     using System;
 
@@ -13,12 +15,8 @@
             Url = url;
             ImageUrl = imageUrl;
 
-            Console.WriteLine(date);
-
-            DateTime.TryParse(date, out var publishDate);
+            DateTime.TryParse(date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var publishDate);
             PublishDate = publishDate;
-
-            Console.WriteLine($"Day: {publishDate.Day}; Month: {publishDate.Month}; Year: {publishDate.Year}; Full date: {publishDate.Date}");
         }
 
         public string NewsId { get; set; }

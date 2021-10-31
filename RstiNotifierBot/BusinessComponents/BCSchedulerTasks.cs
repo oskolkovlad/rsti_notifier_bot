@@ -9,7 +9,7 @@
     {
         private readonly IDictionary<string, Timer> _timers;
 
-        private static readonly object _lockOblect = new object();
+        private static readonly object _lockObject = new object();
         
         public BCSchedulerTasks()
         {
@@ -18,7 +18,7 @@
 
         #region IBCSchedulerJob Members
 
-        public void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 300)
+        public void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 60)
         {
             if (_timers.ContainsKey(taskId))
             {
@@ -28,7 +28,7 @@
             var job = new Job(() => ExecuteWithDebug(task));
             var timer = new Timer(DoTimerJob, job, Timeout.Infinite, Timeout.Infinite);
 
-            lock (_lockOblect)
+            lock (_lockObject)
             {
                 _timers.Add(taskId, timer);
             }
@@ -47,7 +47,7 @@
 
             var timer = _timers[taskId];
 
-            lock (_lockOblect)
+            lock (_lockObject)
             {
                 _timers.Remove(taskId);
             }

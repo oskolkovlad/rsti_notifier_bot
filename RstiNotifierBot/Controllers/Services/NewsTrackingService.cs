@@ -59,13 +59,20 @@
 
         private async Task CheckNews()
         {
-            var addedNewsItems = (await AddRecentNews()).ToList();
-            if (addedNewsItems.Count == 0)
+            try
             {
-                return;
-            }
+                var addedNewsItems = (await AddRecentNews()).ToList();
+                if (addedNewsItems.Count == 0)
+                {
+                    return;
+                }
 
-            await SendNews(addedNewsItems);
+                await SendNews(addedNewsItems);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         private async Task<IEnumerable<News>> AddRecentNews()
@@ -110,9 +117,10 @@
             var subscribedChatIds = _bcChatProperty.GetProperties(Resources.SubscriptionPropertyName, value)
                 .Select(x => x.ChatId).ToList();
 
+            var newsItems = addedNewsItems.ToList();
             foreach (var chatId in subscribedChatIds)
             {
-                foreach (var newsItem in addedNewsItems)
+                foreach (var newsItem in newsItems)
                 {
                     await SendNews(chatId, newsItem);
                 }

@@ -18,7 +18,7 @@
             Console.WriteLine(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
             Console.WriteLine(CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern);
 
-            var cultureInfo = cultureInfo = new CultureInfo("ru-RU");
+            var cultureInfo = new CultureInfo("ru-RU");
             if (DateTime.TryParse(date, cultureInfo, DateTimeStyles.None, out var publishDate))
             {
                 Console.WriteLine(cultureInfo.DateTimeFormat.ShortDatePattern);

@@ -16,7 +16,7 @@
 
             if (DateTime.TryParse(date, out var publishDate))
             {
-                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yyyy", CultureInfo.InvariantCulture);
+                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd/mm/yyyy", CultureInfo.InvariantCulture);
             }
             PublishDate = publishDate;
         }

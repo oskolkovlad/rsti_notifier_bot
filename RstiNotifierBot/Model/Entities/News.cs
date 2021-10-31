@@ -14,8 +14,11 @@
             Url = url;
             ImageUrl = imageUrl;
 
-            var cultureInfo = new CultureInfo("ru-RU", false);
-            DateTime.TryParse(date, cultureInfo, DateTimeStyles.None, out var publishDate);
+            if (DateTime.TryParse(date, out var publishDate))
+            {
+                var cultureInfo = new CultureInfo("ru-RU", false);
+                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.mm.yyyy", cultureInfo);
+            }
             PublishDate = publishDate;
         }
 

@@ -19,11 +19,14 @@
 
         #region IBCSchedulerJob Members
 
-        public void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 60)
+        public void ScheduleTask(string taskId, Action task, int dueTime = 0, int period = 3600)
         {
-            if (_timers.ContainsKey(taskId))
+            lock (_lockObject)
             {
-                return;
+                if (_timers.ContainsKey(taskId))
+                {
+                    return;
+                }
             }
 
             var job = new Job(() => ExecuteWithDebug(task));
@@ -41,15 +44,15 @@
 
         public void StopTask(string taskId)
         {
-            if (!_timers.ContainsKey(taskId))
-            {
-                return;
-            }
-
-            var timer = _timers[taskId];
-
+            Timer timer;
             lock (_lockObject)
             {
+                if (!_timers.ContainsKey(taskId))
+                {
+                    return;
+                }
+
+                timer = _timers[taskId];
                 _timers.Remove(taskId);
             }
 

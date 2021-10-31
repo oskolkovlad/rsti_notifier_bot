@@ -6,8 +6,8 @@
 
     internal interface IBCNewsList : IBCComponent
     {
-        Task<News> GetLastNewsItem(string url);
+        Task<News> GetLastNewsItemAsync(string url);
 
-        Task<IEnumerable<News>> GetNewsItems(string url, bool reverse = true);
+        Task<IEnumerable<News>> GetNewsItemsAsync(string url, bool reverse = true);
     }
 }

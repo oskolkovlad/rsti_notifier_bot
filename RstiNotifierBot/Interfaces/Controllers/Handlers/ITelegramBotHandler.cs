@@ -13,6 +13,6 @@
         
         Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
 
-        Task MakePost(ITelegramBotClient botClient, long chatId, PostDto post);
+        Task MakePostAsync(ITelegramBotClient botClient, long chatId, PostDto post);
     }
 }

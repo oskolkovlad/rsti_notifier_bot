@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.BusinessComponents;
 
     internal class BCSchedulerTasks : IBCSchedulerTasks
@@ -74,9 +75,9 @@
         private static void ExecuteWithDebug(Action action)
         {
             try { action(); }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine(ex.Message);
+                exception.OutputLog();
                 throw;
             }
         }

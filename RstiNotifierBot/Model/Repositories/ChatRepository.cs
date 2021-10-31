@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Dapper;
-    using Npgsql;
     using RstiNotifierBot.Interfaces.Model.Repositories;
     using RstiNotifierBot.Model.Entities;
 
@@ -33,40 +31,16 @@
 
         #region IChatRepository Members
 
-        public void Create(Chat item)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(InsertChatQuery, item);
-        }
+        public void Create(Chat item) => ExecuteQuery(InsertChatQuery, item);
 
-        public IList<Chat> GetChats()
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<Chat>(GetChatsQuery).ToList();
-        }
+        public IList<Chat> GetChats() => GetQueryResult<Chat>(GetChatsQuery);
 
-        public Chat GetChatById(long chatId)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<Chat>(GetChatByIdQuery, new { chatId }).FirstOrDefault();
-        }
+        public Chat GetChatById(long chatId) =>
+            GetQueryResult<Chat>(GetChatByIdQuery, new { chatId }).FirstOrDefault();
 
-        public void Update(Chat item)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(UpdateChatQuery, item);
-        }
+        public void Update(Chat item) => ExecuteQuery(UpdateChatQuery, item);
 
-        public void Delete(long chatId)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(DeleteChatQuery, new { chatId });
-        }
+        public void Delete(long chatId) => ExecuteQuery(DeleteChatQuery, new { chatId });
 
         #endregion
     }

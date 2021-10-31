@@ -8,6 +8,7 @@
     using RstiNotifierBot.Controllers.Handlers;
     using RstiNotifierBot.Controllers.Parsers;
     using RstiNotifierBot.Controllers.Services;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.Controllers.Services;
     using RstiNotifierBot.Model.Repositories;
 
@@ -21,11 +22,11 @@
             try
             {
                 InitializeDependencies();
-                await StartWork();
+                await StartWorkAsync();
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                exception.OutputLog();
             }
             
             Thread.Sleep(Timeout.Infinite);
@@ -64,10 +65,9 @@
                 messageHandler, inlineMarkupHandler, bcNews, bcNewsList, bcChatProperty, bcSchedulerTasks);
         }
 
-        private static async Task StartWork()
+        private static async Task StartWorkAsync()
         {
-            await _botManager.Start();
-
+            await _botManager.StartAsync();
             _newsTrackingService.Start();
         }
     }

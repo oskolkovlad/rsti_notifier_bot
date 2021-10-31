@@ -2,11 +2,11 @@
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
     using Telegram.Bot;
     using Telegram.Bot.Extensions.Polling;
     using Telegram.Bot.Types.Enums;
     using RstiNotifierBot.Interfaces.Controllers.Handlers;
-    using System.Threading.Tasks;
 
     internal class TelegramBotManager
     {
@@ -34,39 +34,28 @@
 
         public static ITelegramBotClient Client => GetClient();
 
-        public async Task Start()
+        public async Task StartAsync()
         {
-            try
-            {
-                var botInfo = await Client.GetMeAsync();
-                Console.WriteLine(StartBotMessage, botInfo.Username);
+            var botInfo = await Client.GetMeAsync();
 
-                Client.StartReceiving(
-                    new DefaultUpdateHandler(
-                        _botHandler.HandleUpdateAsync,
-                        _botHandler.HandleErrorAsync,
-                        new[] { UpdateType.Message }),
-                    _cancellationTokenSource.Token
-                );
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
+            Console.WriteLine(new string('=', 50));
+            Console.WriteLine(StartBotMessage, botInfo.Username);
+            Console.WriteLine(string.Concat(Environment.NewLine, new string('=', 50)));
+
+            Client.StartReceiving(
+                new DefaultUpdateHandler(
+                    _botHandler.HandleUpdateAsync,
+                    _botHandler.HandleErrorAsync,
+                    new[] { UpdateType.Message }),
+                _cancellationTokenSource.Token
+            );
         }
 
         public void Stop()
         {
-            try
+            if (Client != null)
             {
-                if (Client != null)
-                {
-                    _cancellationTokenSource.Cancel();
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
+                _cancellationTokenSource.Cancel();
             }
         }
 

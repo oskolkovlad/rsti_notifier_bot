@@ -31,20 +31,22 @@
 
         public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            var errorMessage = exception switch
+            if (exception is ApiRequestException apiRequestException)
             {
-                ApiRequestException apiRequestException =>
-                    $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
-            };
-            Console.WriteLine(errorMessage);
+                var message = $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}";
+                Console.WriteLine(message);
+            }
+            else
+            {
+                exception.OutputLog();
+            }
 
             return Task.CompletedTask;
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var handler = BotOnMessageReceived(botClient, update.Message);
+            var handler = BotOnMessageReceivedAsync(botClient, update.Message);
             try
             {
                 await handler;
@@ -55,35 +57,7 @@
             }
         }
 
-        public static IReplyMarkup CreateInlineReplyMarkup(IEnumerable<IEnumerable<InlineButtonDto>> inlineMarkup)
-        {
-            var lines = new List<List<InlineKeyboardButton>>();
-
-            var buttonsLines = inlineMarkup.ToList();
-            foreach (var buttonsLine in buttonsLines)
-            {
-                var line = new List<InlineKeyboardButton>();
-
-                var buttonsInLine = buttonsLine.ToList();
-                foreach (var buttonInLine in buttonsInLine)
-                {
-                    var button = new InlineKeyboardButton
-                    {
-                        Text = buttonInLine.Text,
-                        Url = buttonInLine.Url,
-                        CallbackData = buttonInLine.CallbackData,
-                    };
-
-                    line.Add(button);
-                }
-
-                lines.Add(line);
-            }
-
-            return new InlineKeyboardMarkup(lines);
-        }
-
-        public async Task MakePost(ITelegramBotClient botClient, long chatId, PostDto post)
+        public async Task MakePostAsync(ITelegramBotClient botClient, long chatId, PostDto post)
         {
             if (botClient == null || post == null)
             {
@@ -103,11 +77,11 @@
 
             if (string.IsNullOrEmpty(imageUrl))
             {
-                await botClient.SendTextMessage(chatId, message, replyMarkup);
+                await botClient.SendTextMessageAsync(chatId, message, replyMarkup);
             }
             else
             {
-                await botClient.SendImageMessage(chatId, message, imageUrl, replyMarkup);
+                await botClient.SendImageMessageAsync(chatId, message, imageUrl, replyMarkup);
             }
         }
 
@@ -115,7 +89,7 @@
 
         #region Private Members
 
-        private async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
+        private async Task BotOnMessageReceivedAsync(ITelegramBotClient botClient, Message message)
         {
             var chatId = message.Chat.Id;
             var botInfo = await botClient.GetMeAsync();
@@ -130,14 +104,40 @@
             var result = _commandsInvoker.Execute(chat, command);
             if (!result.IsSuccess)
             {
-                await botClient.SendTextMessage(chatId, ProcessingWarningMessage);
+                await TelegramBotExtensions.SendTextMessageAsync(botClient, chatId, ProcessingWarningMessage);
                 return;
             }
 
             if (result is PostCommandResult postResult)
             {
-                await MakePost(botClient, chatId, postResult.Post);
+                await MakePostAsync(botClient, chatId, postResult.Post);
             }
+        }
+
+        private static IReplyMarkup CreateInlineReplyMarkup(InlineButtonDto[][] inlineMarkup)
+        {
+            var lines = new List<List<InlineKeyboardButton>>();
+
+            foreach (var buttonsLine in inlineMarkup)
+            {
+                var line = new List<InlineKeyboardButton>();
+
+                foreach (var buttonInLine in buttonsLine)
+                {
+                    var button = new InlineKeyboardButton
+                    {
+                        Text = buttonInLine.Text,
+                        Url = buttonInLine.Url,
+                        CallbackData = buttonInLine.CallbackData,
+                    };
+
+                    line.Add(button);
+                }
+
+                lines.Add(line);
+            }
+
+            return new InlineKeyboardMarkup(lines);
         }
 
         #endregion

@@ -22,6 +22,7 @@
         private readonly IBCNewsList _bCNewsList;
         private readonly IBCChatProperty _bcChatProperty;
         private readonly IBCSchedulerTasks _bcSchedulerTasks;
+
         private readonly string _taskId;
 
         public NewsTrackingService(
@@ -49,7 +50,7 @@
         #region BaseService Members
 
         protected override void StartAction() =>
-            _bcSchedulerTasks.ScheduleTask(_taskId, async () => await CheckNews());
+            _bcSchedulerTasks.ScheduleTask(_taskId, async () => await CheckNewsAsync());
 
         protected override void StopAction() => _bcSchedulerTasks.StopTask(_taskId);
 
@@ -57,27 +58,27 @@
 
         #region Private Members
 
-        private async Task CheckNews()
+        private async Task CheckNewsAsync()
         {
             try
             {
-                var addedNewsItems = (await AddRecentNews()).ToList();
+                var addedNewsItems = (await AddRecentNewsAsync()).ToList();
                 if (addedNewsItems.Count == 0)
                 {
                     return;
                 }
 
-                await SendNews(addedNewsItems);
+                await SendNewsAsync(addedNewsItems);
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                exception.OutputLog();
             }
         }
 
-        private async Task<IEnumerable<News>> AddRecentNews()
+        private async Task<IEnumerable<News>> AddRecentNewsAsync()
         {
-            var currentLastNewsItems = (await _bCNewsList.GetNewsItems(Resources.NewsUrl)).ToList();
+            var currentLastNewsItems = (await _bCNewsList.GetNewsItemsAsync(Resources.NewsUrl)).ToList();
             if (currentLastNewsItems.Count == 0)
             {
                 return Enumerable.Empty<News>();
@@ -111,7 +112,7 @@
             return addedNewsItems;
         }
 
-        private async Task SendNews(IEnumerable<News> addedNewsItems)
+        private async Task SendNewsAsync(IEnumerable<News> addedNewsItems)
         {
             var value = true.ToString().ToLower();
             var subscribedChatIds = _bcChatProperty.GetProperties(Resources.SubscriptionPropertyName, value)
@@ -122,18 +123,18 @@
             {
                 foreach (var newsItem in newsItems)
                 {
-                    await SendNews(chatId, newsItem);
+                    await SendNewsAsync(chatId, newsItem);
                 }
             }
         }
 
-        private async Task SendNews(long chatId, News item)
+        private async Task SendNewsAsync(long chatId, News item)
         {
             var message = _messageHandler.GetNewsMessage(item);
             var inlineMarkup = _inlineMarkupHandler.GetPostReplyMarkup(item.Url);
             var post = new PostDto(message, item.ImageUrl, inlineMarkup);
 
-            await _botHandler.MakePost(_botClient, chatId, post);
+            await _botHandler.MakePostAsync(_botClient, chatId, post);
         }
 
         #endregion

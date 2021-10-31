@@ -8,7 +8,7 @@
 
     internal static class TelegramBotExtensions
     {
-        public static async Task SendTextMessage(this ITelegramBotClient botClient, long chatId, string message,
+        public static async Task SendTextMessageAsync(this ITelegramBotClient botClient, long chatId, string message,
             IReplyMarkup replyMarkup = null)
         {
             if (string.IsNullOrEmpty(message))
@@ -19,7 +19,7 @@
             await botClient.SendTextMessageAsync(chatId, message, ParseMode.Markdown, replyMarkup: replyMarkup);
         }
 
-        public static async Task SendImageMessage(this ITelegramBotClient botClient, long chatId, string message,
+        public static async Task SendImageMessageAsync(this ITelegramBotClient botClient, long chatId, string message,
             string imageUrl, IReplyMarkup replyMarkup = null)
         {
             if (string.IsNullOrEmpty(imageUrl) || string.IsNullOrEmpty(message))

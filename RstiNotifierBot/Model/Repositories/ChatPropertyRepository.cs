@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Dapper;
-    using Npgsql;
     using RstiNotifierBot.Interfaces.Model.Repositories;
     using RstiNotifierBot.Model.Entities;
 
@@ -30,33 +28,15 @@
 
         #region IChatPropertyRepository Members
 
-        public void Create(ChatProperty item)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(InsertPropertyQuery, item);
-        }
+        public void Create(ChatProperty item) => ExecuteQuery(InsertPropertyQuery, item);
+        
+        public IList<ChatProperty> GetProperties(string name, string value) =>
+            GetQueryResult<ChatProperty>(GetPropertiesQuery, new { name, value });
 
-        public IList<ChatProperty> GetProperties(string name, string value)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<ChatProperty>(GetPropertiesQuery, new { name, value }).ToList();
-        }
+        public ChatProperty GetProperty(long chatId, string name, string value) =>
+            GetQueryResult<ChatProperty>(GetPropertyQuery, new { chatId, name, value }).FirstOrDefault();
 
-        public ChatProperty GetProperty(long chatId, string name, string value)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<ChatProperty>(GetPropertyQuery, new { chatId, name, value }).FirstOrDefault();
-        }
-
-        public void Delete(long chatId, string name)
-        {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(DeletePropertyQuery, new { chatId, name });
-        }
+        public void Delete(long chatId, string name) => ExecuteQuery(DeletePropertyQuery, new { chatId, name });
 
         #endregion
     }

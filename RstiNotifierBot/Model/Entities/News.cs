@@ -2,7 +2,6 @@
 {
     using System;
     using System.Globalization;
-    using System.Threading;
 
     internal class News
     {

@@ -6,20 +6,21 @@
     using System.Net.Http;
     using System.Threading.Tasks;
     using HtmlAgilityPack;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.Controllers.Parsers;
 
     internal abstract class HtmlParserController<T> : IParserController<T>
     {
         #region IParserController Members
 
-        public async Task<IEnumerable<T>> Parse(string source)
+        public async Task<IEnumerable<T>> ParseAsync(string source)
         {
             if (string.IsNullOrEmpty(source))
             {
                 return Enumerable.Empty<T>();
             }
 
-            var htmlContent = await GetHtmlContent(source);
+            var htmlContent = await GetHtmlContentAsync(source);
             if (string.IsNullOrEmpty(htmlContent))
             {
                 return null;
@@ -44,7 +45,7 @@
 
         #region Private Members
 
-        private static async Task<string> GetHtmlContent(string url)
+        private static async Task<string> GetHtmlContentAsync(string url)
         {
             try
             {
@@ -61,9 +62,9 @@
                     return htmlContent;
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine(ex.Message);
+                exception.OutputLog();
             }
 
             return null;

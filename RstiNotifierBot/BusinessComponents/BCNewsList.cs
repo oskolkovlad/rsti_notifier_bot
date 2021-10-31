@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.BusinessComponents;
     using RstiNotifierBot.Interfaces.Controllers.Parsers;
     using RstiNotifierBot.Model.Entities;
@@ -19,22 +20,22 @@
 
         #region IBCNewsList Members
 
-        public async Task<News> GetLastNewsItem(string url)
+        public async Task<News> GetLastNewsItemAsync(string url)
         {
-            var items = await GetNewsItems(url);
+            var items = await GetNewsItemsAsync(url);
             return items.LastOrDefault();
         }
 
-        public async Task<IEnumerable<News>> GetNewsItems(string url, bool reverse = true)
+        public async Task<IEnumerable<News>> GetNewsItemsAsync(string url, bool reverse = true)
         {
             try
             {
-                var items = await _parserController.Parse(url);
+                var items = await _parserController.ParseAsync(url);
                 return reverse ? items.Reverse() : items;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine(ex.Message);
+                exception.OutputLog();
             }
 
             return null;

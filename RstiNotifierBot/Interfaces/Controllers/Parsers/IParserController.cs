@@ -5,6 +5,6 @@
 
     internal interface IParserController<T>
     {
-        Task<IEnumerable<T>> Parse(string source);
+        Task<IEnumerable<T>> ParseAsync(string source);
     }
 }

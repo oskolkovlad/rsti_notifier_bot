@@ -1,6 +1,9 @@
 ﻿namespace RstiNotifierBot.Model.Repositories
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Dapper;
     using Npgsql;
 
     internal class BaseRepository
@@ -9,7 +12,25 @@
 
         #region Protected Members
 
-        protected string GetConnectionString()
+        protected IList<TItem> GetQueryResult<TItem>(string sqlQuery, object param = null)
+        {
+            var connectionString = GetConnectionString();
+            using var connection = new NpgsqlConnection(connectionString);
+            return connection.Query<TItem>(sqlQuery, param).ToList();
+        }
+
+        protected void ExecuteQuery(string sqlQuery, object param = null)
+        {
+            var connectionString = GetConnectionString();
+            using var connection = new NpgsqlConnection(connectionString);
+            connection.Execute(sqlQuery, param);
+        }
+
+        #endregion
+
+        #region Private Members
+
+        private string GetConnectionString()
         {
 #if DEBUG
             return Configuration.DefaultConectionString;

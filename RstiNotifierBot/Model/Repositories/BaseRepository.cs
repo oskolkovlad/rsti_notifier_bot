@@ -30,12 +30,21 @@
 
         #region Private Members
 
-        private string GetConnectionString()
+        private static string GetConnectionString()
         {
 #if DEBUG
-            return Configuration.DefaultConectionString;
+            return GetDefaultConnectionString();
 #endif
+            return GetHerokuConnectionString();
+        }
 
+        private static string GetDefaultConnectionString()
+        {
+            return null;
+        }
+
+        private static string GetHerokuConnectionString()
+        {
             var databaseUrl = Environment.GetEnvironmentVariable(DatabaseUrlVariable);
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');

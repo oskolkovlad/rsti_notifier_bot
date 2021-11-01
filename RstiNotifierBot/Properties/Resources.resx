@@ -140,4 +140,7 @@
   <data name="SubscriptionPropertyName" xml:space="preserve">
     <value>Subscription</value>
   </data>
+  <data name="YoutubeChannelUrl" xml:space="preserve">
+    <value>https://www.youtube.com/channel/UCXEyCUWTTWY7XXTJPkhS8SA/videos</value>
+  </data>
 </root>

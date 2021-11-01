@@ -106,5 +106,14 @@ namespace RstiNotifierBot.Properties {
                 return ResourceManager.GetString("SubscriptionPropertyName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на https://www.youtube.com/channel/UCXEyCUWTTWY7XXTJPkhS8SA/videos.
+        /// </summary>
+        internal static string YoutubeChannelUrl {
+            get {
+                return ResourceManager.GetString("YoutubeChannelUrl", resourceCulture);
+            }
+        }
     }
 }

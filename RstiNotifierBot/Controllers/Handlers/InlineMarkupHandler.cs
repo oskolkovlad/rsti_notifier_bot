@@ -9,6 +9,7 @@
         private const string LinkCaption = "Перейти";
         private const string AllNewsCaption = "Все новости";
         private const string InstagramCaption = "Инстаграм";
+        private const string YoutubeChannelCaption = "Youtube";
 
         #region IInlineMarkupHandler Members
 
@@ -28,7 +29,8 @@
                 new[]
                 {
                     new InlineButtonDto(AllNewsCaption, Resources.NewsUrl),
-                    new InlineButtonDto(InstagramCaption, Resources.InstagramUrl)
+                    new InlineButtonDto(InstagramCaption, Resources.InstagramUrl),
+                    new InlineButtonDto(YoutubeChannelCaption, Resources.YoutubeChannelUrl),
                 }
             };
             return inlineMarkup;

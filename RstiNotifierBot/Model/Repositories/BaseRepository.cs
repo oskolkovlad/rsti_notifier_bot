@@ -2,14 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using Dapper;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using Npgsql;
+    using RstiNotifierBot.BusinessObjects.Constants;
 
     internal class BaseRepository
     {
-        private const string DatabaseUrlVariable = "DATABASE_URL";
-
         #region Protected Members
 
         protected IList<TItem> GetQueryResult<TItem>(string sqlQuery, object param = null)
@@ -54,12 +56,28 @@
 
         private static string GetDefaultConnectionString()
         {
-            return null;
+            string connectionString = null;
+
+            using (var stream = File.OpenText(Credentials.CredentialJsonFileName))
+            using (var reader = new JsonTextReader(stream))
+            {
+                var credentials = JObject.Load(reader);
+                var properties = credentials
+                    .SelectToken(Credentials.ConnectionStringToken)
+                    .SelectToken(Credentials.DefaultConnectionStringToken)
+                    .Children()
+                    .Cast<JProperty>()
+                    .Select(x => $"{x.Name}={x.Value}");
+
+                connectionString = string.Join(";", properties);
+            }
+
+            return connectionString;
         }
 
         private static string GetHerokuConnectionString()
         {
-            var databaseUrl = Environment.GetEnvironmentVariable(DatabaseUrlVariable);
+            var databaseUrl = Environment.GetEnvironmentVariable(Credentials.DatabaseUrlVariable);
             var databaseUri = new Uri(databaseUrl);
             var userInfo = databaseUri.UserInfo.Split(':');
 

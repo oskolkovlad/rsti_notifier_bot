@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using RstiNotifierBot.Extensions;
 
     internal class News
     {
@@ -14,13 +15,10 @@
             Url = url;
             ImageUrl = imageUrl;
 
-            var cultureInfo = new CultureInfo("ru-RU");
-            if (DateTime.TryParse(date, cultureInfo, DateTimeStyles.None, out var publishDate))
-            {
-                publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.MM.yy", cultureInfo);
-            }
-            PublishDate = publishDate;
+            ConvertStringToDate(date);
         }
+
+        #region Public Members
 
         public string NewsId { get; set; }
 
@@ -33,5 +31,28 @@
         public string ImageUrl { get; set; }
 
         public DateTime PublishDate { get; set; }
+
+        #endregion
+
+        #region Private Members
+
+        private void ConvertStringToDate(string date)
+        {
+            try
+            {
+                var cultureInfo = new CultureInfo("ru-RU");
+                if (DateTime.TryParse(date, cultureInfo, DateTimeStyles.None, out var publishDate))
+                {
+                    publishDate = DateTime.ParseExact(date.Replace("&nbsp;", null), "dd.MM.yy", cultureInfo);
+                }
+                PublishDate = publishDate;
+            }
+            catch (Exception exception)
+            {
+                exception.OutputConsoleLog();
+            }
+        }
+
+        #endregion
     }
 }

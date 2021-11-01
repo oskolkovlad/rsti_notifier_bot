@@ -2,6 +2,8 @@
 {
     internal class ChatProperty
     {
+        public ChatProperty() { }
+
         public ChatProperty(string chatPropertyId, long chatId, string name, string value)
         {
             ChatPropertyId = chatPropertyId;

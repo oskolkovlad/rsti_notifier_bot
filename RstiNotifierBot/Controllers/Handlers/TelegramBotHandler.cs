@@ -38,7 +38,7 @@
             }
             else
             {
-                exception.OutputLog();
+                exception.OutputConsoleLog();
             }
 
             return Task.CompletedTask;

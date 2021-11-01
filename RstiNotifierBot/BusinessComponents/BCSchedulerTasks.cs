@@ -80,7 +80,7 @@
             try { action(); }
             catch (Exception exception)
             {
-                exception.OutputLog();
+                exception.OutputConsoleLog();
                 throw;
             }
         }

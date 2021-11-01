@@ -31,11 +31,16 @@
             try
             {
                 var items = await _parserController.ParseAsync(url);
+                if (items == null)
+                {
+                    return Enumerable.Empty<News>();
+                }
+
                 return reverse ? items.Reverse() : items;
             }
             catch (Exception exception)
             {
-                exception.OutputLog();
+                exception.OutputConsoleLog();
             }
 
             return null;

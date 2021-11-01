@@ -1,5 +1,6 @@
 ﻿namespace RstiNotifierBot.Controllers.Commands
 {
+    using System;
     using System.Collections.Generic;
     using RstiNotifierBot.BusinessObjects.Constants;
     using RstiNotifierBot.Dto;
@@ -34,7 +35,14 @@
                 case Commands.Subscribe:
                 case Commands.Unsubscribe:
                 case Commands.Info:
-                    result = _commands[command].Execute(context);
+                    try
+                    {
+                        result = _commands[command].Execute(context);
+                    }
+                    catch(Exception exception)
+                    {
+                        throw;
+                    }
                     break;
 
                 default:

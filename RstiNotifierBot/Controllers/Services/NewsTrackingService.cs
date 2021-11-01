@@ -72,7 +72,7 @@
             }
             catch (Exception exception)
             {
-                exception.OutputLog();
+                exception.OutputConsoleLog();
             }
         }
 
@@ -81,7 +81,7 @@
             var currentLastNewsItems = (await _bCNewsList.GetNewsItemsAsync(Resources.NewsUrl)).ToList();
             if (currentLastNewsItems.Count == 0)
             {
-                return Enumerable.Empty<News>();
+                return currentLastNewsItems;
             }
 
             var addedNewsItems = new List<News>();

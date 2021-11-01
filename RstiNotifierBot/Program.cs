@@ -26,7 +26,7 @@
             }
             catch (Exception exception)
             {
-                exception.OutputLog();
+                exception.OutputConsoleLog();
             }
             
             Thread.Sleep(Timeout.Infinite);

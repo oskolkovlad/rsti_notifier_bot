@@ -26,7 +26,7 @@
             var url = titleElement?.GetAttributeValue(NewsAttribute.Href, null);
             var imageUrl = imageElement?.GetAttributeValue(NewsAttribute.Source, null);
 
-            return string.IsNullOrEmpty(title) && string.IsNullOrEmpty(preview)
+            return string.IsNullOrEmpty(title) && string.IsNullOrEmpty(preview) && string.IsNullOrEmpty(url)
                 ? null
                 : new News(title, preview, date, url, imageUrl);
         }

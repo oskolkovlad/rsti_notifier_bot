@@ -4,7 +4,7 @@
 
     internal static class ExceptionExtensions
     {
-        public static void OutputLog(this Exception exception)
+        public static void OutputConsoleLog(this Exception exception)
         {
             Console.WriteLine(exception.Message);
             var innerException = exception.InnerException;

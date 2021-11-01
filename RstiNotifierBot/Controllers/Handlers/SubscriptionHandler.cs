@@ -26,18 +26,25 @@
 
         public string Subscribe(long chatId)
         {
-            string message;
+            string message = null;
 
-            if (IsSubscriptionAlreadyDone(chatId))
+            try
             {
-                message = AlreadySubscribedMessage;
+                if (IsSubscriptionAlreadyDone(chatId))
+                {
+                    message = AlreadySubscribedMessage;
+                }
+                else
+                {
+                    var chatProperty = CreateSubscriptionProperty(chatId);
+                    _bcChatProperty.Create(chatProperty);
+
+                    message = SubscribedMessage;
+                }
             }
-            else
+            catch(Exception exception)
             {
-                var chatProperty = CreateSubscriptionProperty(chatId);
-                _bcChatProperty.Create(chatProperty);
-
-                message = SubscribedMessage;
+                exception.OutputConsoleLog();
             }
 
             return message;
@@ -45,16 +52,23 @@
 
         public string Unsubscribe(long chatId)
         {
-            string message;
+            string message = null;
 
-            if (!IsSubscriptionAlreadyDone(chatId))
-            {
-                message = AlreadyUnsubscribedMessage;
+            try
+            { 
+                if (!IsSubscriptionAlreadyDone(chatId))
+                {
+                    message = AlreadyUnsubscribedMessage;
+                }
+                else
+                {
+                    _bcChatProperty.Delete(chatId, Resources.SubscriptionPropertyName);
+                    message = UnsubscribedMessage;
+                }
             }
-            else
+            catch(Exception exception)
             {
-                _bcChatProperty.Delete(chatId, Resources.SubscriptionPropertyName);
-                message = UnsubscribedMessage;
+                exception.OutputConsoleLog();
             }
 
             return message;

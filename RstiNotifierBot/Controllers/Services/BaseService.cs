@@ -1,5 +1,7 @@
 ﻿namespace RstiNotifierBot.Controllers.Services
 {
+    using System;
+    using RstiNotifierBot.Extensions;
     using RstiNotifierBot.Interfaces.Controllers.Services;
 
     internal abstract class BaseService : IService
@@ -15,8 +17,15 @@
                 return;
             }
 
-            StartAction();
-            _isServiceStarted = true;
+            try
+            {
+                StartAction();
+                _isServiceStarted = true;
+            }
+            catch (Exception exception)
+            {
+                exception.OutputConsoleLog();
+            }
         }
 
         public void Stop()
@@ -26,8 +35,15 @@
                 return;
             }
 
-            StopAction();
-            _isServiceStarted = false;
+            try
+            {
+                StopAction();
+                _isServiceStarted = false;
+            }
+            catch (Exception exception)
+            {
+                exception.OutputConsoleLog();
+            }
         }
 
         #endregion

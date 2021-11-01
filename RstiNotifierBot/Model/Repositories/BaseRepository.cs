@@ -14,16 +14,30 @@
 
         protected IList<TItem> GetQueryResult<TItem>(string sqlQuery, object param = null)
         {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            return connection.Query<TItem>(sqlQuery, param).ToList();
+            try
+            {
+                var connectionString = GetConnectionString();
+                using var connection = new NpgsqlConnection(connectionString);
+                return connection.Query<TItem>(sqlQuery, param).ToList();
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         protected void ExecuteQuery(string sqlQuery, object param = null)
         {
-            var connectionString = GetConnectionString();
-            using var connection = new NpgsqlConnection(connectionString);
-            connection.Execute(sqlQuery, param);
+            try
+            {
+                var connectionString = GetConnectionString();
+                using var connection = new NpgsqlConnection(connectionString);
+                connection.Execute(sqlQuery, param);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         #endregion

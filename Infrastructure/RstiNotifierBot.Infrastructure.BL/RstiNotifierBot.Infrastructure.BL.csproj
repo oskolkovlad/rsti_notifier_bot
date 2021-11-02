@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\RstiNotifierBot.Common.BL\RstiNotifierBot.Common.BL.csproj" />
+    <ProjectReference Include="..\..\RstiNotifierBot.BL\RstiNotifierBot.BL.csproj" />
+    <ProjectReference Include="..\RstiNotifierBot.Infrastructure\RstiNotifierBot.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

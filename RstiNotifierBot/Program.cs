@@ -12,6 +12,8 @@
 
     internal class Program
     {
+        private static bool _isBotStarted;
+
         private static async Task Main()
         {
             try
@@ -22,7 +24,11 @@
             catch (Exception exception)
             {
                 exception.OutputConsoleLog();
-                return;
+
+                if (!_isBotStarted)
+                {
+                    return;
+                }
             }
             
             Thread.Sleep(Timeout.Infinite);
@@ -42,6 +48,9 @@
 
             await botManager.StartAsync();
             newsTrackingService.Start();
+
+            Thread.Sleep(5000);
+            _isBotStarted = true;
         }
     }
 }

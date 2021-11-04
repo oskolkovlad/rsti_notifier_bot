@@ -54,7 +54,7 @@
             bool withFinishSeparator = true,
             bool newLineAfter = false)
         {
-            var dateTime = string.Concat(DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString());
+            var dateTime = $"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}";
             ConsoleHelper.OutputConsoleMessage(dateTime, withFinishSeparator: false, newLineAfter: true);
         }
 

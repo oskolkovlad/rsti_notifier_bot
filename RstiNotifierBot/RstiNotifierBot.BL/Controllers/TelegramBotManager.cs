@@ -1,6 +1,5 @@
 ﻿namespace RstiNotifierBot.BL.Controllers
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using Telegram.Bot;
@@ -8,10 +7,12 @@
     using Telegram.Bot.Types.Enums;
     using RstiNotifierBot.BL.Interfaces.Handlers;
     using RstiNotifierBot.Common.BL.Controllers;
+    using RstiNotifierBot.Common.BL.Extensions;
 
     internal class TelegramBotManager : ITelegramBotManager
     {
         private const string StartBotMessage = "Bot \"@{0}\" has been started...";
+        private const string StopBotMessage = "Bot \"@{0}\" finished work...";
 
         private static readonly object _lockObject;
         private static readonly CancellationTokenSource _cancellationTokenSource;
@@ -39,9 +40,10 @@
         {
             var botInfo = await Client.GetMeAsync();
 
-            Console.WriteLine(new string('=', 50));
-            Console.WriteLine(StartBotMessage, botInfo.Username);
-            Console.WriteLine(string.Concat(new string('=', 50), Environment.NewLine));
+            //***//
+            var message = string.Format(StartBotMessage, botInfo.Username);
+            ConsoleHelper.OutputConsoleMessage(message, true, newLineAfter: true);
+            //***//
 
             Client.StartReceiving(
                 new DefaultUpdateHandler(
@@ -52,10 +54,17 @@
             );
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             if (Client != null)
             {
+                var botInfo = await Client.GetMeAsync();
+
+                //***//
+                var message = string.Format(StopBotMessage, botInfo.Username);
+                ConsoleHelper.OutputConsoleMessage(message, true, newLineAfter: true);
+                //***//
+
                 _cancellationTokenSource.Cancel();
             }
         }

@@ -6,6 +6,6 @@
     {
         Task StartAsync();
 
-        void Stop();
+        Task StopAsync();
     }
 }

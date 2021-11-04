@@ -61,17 +61,29 @@
 
         #region Private Members
 
+        private const string CheckNewsStartMessage = "Start checking news for relevance... (NewsTrackingService)";
+        private const string CheckNewsStopMessage = "Stop checking news for relevance... (NewsTrackingService)";
+        private const string AddingNewsStartMessage = "Start adding new news...";
+        private const string SendingNewsStartMessage = "Start sending new news...";
+
         private async Task CheckNewsAsync()
         {
+            //***//
+            ConsoleHelper.OutputNowDateTime(withFinishSeparator: false, newLineAfter: true);
+            ConsoleHelper.OutputConsoleMessage(CheckNewsStartMessage, false, false, false);
+            //***//
+
             try
             {
                 var addedNewsItems = (await AddRecentNewsAsync()).ToList();
-                if (addedNewsItems.Count == 0)
+                if (addedNewsItems.Count != 0)
                 {
-                    return;
+                    await SendNewsAsync(addedNewsItems);
                 }
 
-                await SendNewsAsync(addedNewsItems);
+                //***//
+                ConsoleHelper.OutputConsoleMessage(CheckNewsStopMessage, withStartSeparator: false);
+                //***//
             }
             catch (Exception exception)
             {
@@ -81,6 +93,10 @@
 
         private async Task<IEnumerable<News>> AddRecentNewsAsync()
         {
+            //***//
+            ConsoleHelper.OutputConsoleMessage(AddingNewsStartMessage, false, false, false);
+            //***//
+
             var currentLastNewsItems = (await _newsProvider.GetNewsItemsAsync(Resources.NewsUrl)).ToList();
             if (currentLastNewsItems.Count == 0)
             {
@@ -112,11 +128,19 @@
                 }
             }
 
+            //***//
+            ConsoleHelper.OutputConsoleMessage($"{addedNewsItems.Count} news were added.", false, false, false);
+            //***//
+
             return addedNewsItems;
         }
 
         private async Task SendNewsAsync(IEnumerable<News> addedNewsItems)
         {
+            //***//
+            ConsoleHelper.OutputConsoleMessage(SendingNewsStartMessage, false, false, false);
+            //***//
+
             var value = true.ToString().ToLower();
             var subscribedChatIds = _bcChatProperty.GetProperties(Resources.SubscriptionPropertyName, value)
                 .Select(x => x.ChatId).ToList();
@@ -133,6 +157,10 @@
 
         private async Task SendNewsAsync(long chatId, News item)
         {
+            //***//
+            ConsoleHelper.OutputConsoleMessage($"Send news to chat ({chatId})...", false, false, false);
+            //***//
+
             var message = _messageHandler.GetNewsMessage(item);
             var inlineMarkup = _inlineMarkupHandler.GetPostReplyMarkup(item.Url);
             var post = new PostDto(message, item.ImageUrl, inlineMarkup);

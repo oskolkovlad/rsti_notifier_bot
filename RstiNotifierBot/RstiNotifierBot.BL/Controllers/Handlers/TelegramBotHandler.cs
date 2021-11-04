@@ -15,9 +15,16 @@
     using RstiNotifierBot.BL.Interfaces.Extensions;
     using RstiNotifierBot.BL.Interfaces.Handlers;
     using RstiNotifierBot.Common.BL.Extensions;
-
+    
     internal class TelegramBotHandler : ITelegramBotHandler
     {
+        private const string CommandExecutedMessage = "The command was executed.";
+        private const string NotCommandMessage =
+            "The command was not executed, so it is not a command.";
+        private const string CommandNotSupportedMessage =
+            "The command was not executed, because this command is not supported.";
+        private const string UnsuccessfulResultMessage = "Result (-): unsuccessful.";
+        private const string SuccessfulResultMessage = "Result (+): successful.";
         private const string ProcessingWarningMessage =
             "Данная команда не поддерживается ботом...Попробуте другую.";
 
@@ -35,7 +42,7 @@
             if (exception is ApiRequestException apiRequestException)
             {
                 var message = $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}";
-                Console.WriteLine(message);
+                ConsoleHelper.OutputConsoleMessage(message, true);
             }
             else
             {
@@ -93,12 +100,35 @@
         private async Task BotOnMessageReceivedAsync(ITelegramBotClient botClient, Message message)
         {
             var messageChat = message.Chat;
+            var messageText = message.Text;
+            var messageFrom = message.From;
+
             var chatId = messageChat.Id;
             var botInfo = await botClient.GetMeAsync();
             var command = message.Text.Clear($"@{botInfo.Username}");
 
+            //***//
+            var user = $"{messageFrom.LastName} {messageFrom.FirstName} ({messageFrom.Username})";
+
+            ConsoleHelper.OutputNowDateTime(withFinishSeparator: false, newLineAfter: true);
+            ConsoleHelper.OutputConsoleMessage($"User '{user}'", withStartSeparator: false,
+                withFinishSeparator: false);
+            ConsoleHelper.OutputConsoleMessage($"sends to chat '{messageChat.Title} ({chatId})' command:",
+                withStartSeparator: false, withFinishSeparator: false);
+            ConsoleHelper.OutputConsoleMessage($"\t- Full variant: '{messageText}'",
+                withStartSeparator: false, withFinishSeparator: false);
+            ConsoleHelper.OutputConsoleMessage($"\t- Clear variant: '{command}'",
+                withStartSeparator: false, withFinishSeparator: false, newLineAfter: true);
+            //***//
+
             if (string.IsNullOrEmpty(command) || !command.StartsWith('/'))
             {
+                //***//
+                ConsoleHelper.OutputConsoleMessage(NotCommandMessage, withStartSeparator: false,
+                    withFinishSeparator: false);
+                ConsoleHelper.OutputConsoleMessage(UnsuccessfulResultMessage, withStartSeparator: false);
+                //***//
+
                 return;
             }
 
@@ -109,13 +139,27 @@
             if (!result.IsSuccess)
             {
                 await TelegramBotExtensions.SendTextMessageAsync(botClient, chatId, ProcessingWarningMessage);
+
+                //***//
+                ConsoleHelper.OutputConsoleMessage(CommandNotSupportedMessage, withStartSeparator: false,
+                    withFinishSeparator: false);
+                ConsoleHelper.OutputConsoleMessage(UnsuccessfulResultMessage, withStartSeparator: false);
+                //***//
+
                 return;
             }
 
             if (result is PostCommandResult postResult)
             {
-                await MakePostAsync(botClient, chatId, postResult.Post);
+                var post = postResult.Post;
+                await MakePostAsync(botClient, chatId, post);
             }
+
+            //***//
+            ConsoleHelper.OutputConsoleMessage(CommandExecutedMessage, withStartSeparator: false,
+                withFinishSeparator: false);
+            ConsoleHelper.OutputConsoleMessage(SuccessfulResultMessage, withStartSeparator: false);
+            //***//
         }
 
         private static IReplyMarkup CreateInlineReplyMarkup(InlineButtonDto[][] inlineMarkup)

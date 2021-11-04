@@ -17,6 +17,11 @@
     internal class NewsTrackingService : BaseService,
         INewsTrackingService
     {
+        private const string CheckNewsStartMessage = "Start checking news for relevance...";
+        private const string CheckNewsStopMessage = "Stop checking news for relevance...";
+        private const string AddingNewsStartMessage = "Start adding new news...";
+        private const string SendingNewsStartMessage = "Start sending new news...";
+
         private readonly ITelegramBotClient _botClient;
         private readonly ITelegramBotHandler _botHandler;
         private readonly IMessageHandler _messageHandler;
@@ -60,11 +65,6 @@
         #endregion
 
         #region Private Members
-
-        private const string CheckNewsStartMessage = "Start checking news for relevance... (NewsTrackingService)";
-        private const string CheckNewsStopMessage = "Stop checking news for relevance... (NewsTrackingService)";
-        private const string AddingNewsStartMessage = "Start adding new news...";
-        private const string SendingNewsStartMessage = "Start sending new news...";
 
         private async Task CheckNewsAsync()
         {

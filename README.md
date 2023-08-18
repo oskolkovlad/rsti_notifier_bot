@@ -9,3 +9,7 @@ Supported follow commands:
 - subscribe - Subscribe to news updates (подписаться на рассылку новостей);
 - unsubscribe - Unsubscribe from news updates (отписаться от рассылки новостей);
 - info - Get contact info (получить контактную информацию).
+
+----
+
+_P.S.: токен для бота и данные для подключения к БД не актуальны, иначе бы не были раскрыты._
